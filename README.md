@@ -29,4 +29,9 @@ Add to web config.
 'modules' => [
     'discounts' => ['class' => 'panix\discounts\Module'],
 ],
+```
 
+Migrate
+```
+php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
+```
