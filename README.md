@@ -33,7 +33,15 @@ to the require section of your `composer.json` file.
 ```
 php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 ```
-![Alt-текст](https://bestbattery.com.ua/image/data/Sale/Sale.png "Скидки")
+
+# См. также
+- [CORNER CMS](https://corner-cms.com)
+
+# По русски
+Описание [по русски](README_RU.md)
+
+
+![Alt-текст](http://s1.iconbird.com/ico/2014/1/633/w256h2561390857183sale256.png "Скидки")
 
 > [![CORNER CMS!](http://www.corner.com.ua/site/skins/black/img/logo.png "CORNER CMS")](https://corner-cms.com)  
 <i>Content Management System "CORNER CMS"</i>  
