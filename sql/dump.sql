@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `{prefix}shop_discount` (
+CREATE TABLE IF NOT EXISTS `{prefix}discount` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT '',
   `sum` varchar(10) DEFAULT '',
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}shop_discount` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `{prefix}shop_discount_category` (
+CREATE TABLE IF NOT EXISTS `{prefix}discount_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `discount_id` int(11) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}shop_discount_category` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `{prefix}shop_discount_manufacturer` (
+CREATE TABLE IF NOT EXISTS `{prefix}discount_manufacturer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `discount_id` int(11) DEFAULT NULL,
   `manufacturer_id` int(11) DEFAULT NULL,

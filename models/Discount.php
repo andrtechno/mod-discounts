@@ -34,7 +34,7 @@ class Discount extends \panix\engine\WebModel {
      * @return string the associated database table name
      */
     public static function tableName() {
-        return '{{%shop_discount}}';
+        return '{{%discount}}';
     }
 
     public static function find() {
@@ -64,7 +64,7 @@ class Discount extends \panix\engine\WebModel {
         if (is_array($this->_discountCategories))
             return $this->_discountCategories;
 
-        $this->_discountCategories = Yii::$app->db->createCommand('SELECT category_id FROM {{%shop_discount_category}} WHERE discount_id=:id')
+        $this->_discountCategories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount_category}} WHERE discount_id=:id')
                 ->bindValue(':id', $this->id)
                 ->queryColumn();
 
@@ -101,7 +101,7 @@ class Discount extends \panix\engine\WebModel {
 
 
 
-        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%shop_discount_manufacturer}} WHERE discount_id=:id')
+        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount_manufacturer}} WHERE discount_id=:id')
                 ->bindValue(':id', $this->id)
                 ->queryColumn();
 
@@ -126,7 +126,7 @@ class Discount extends \panix\engine\WebModel {
         // Process manufacturers
         if (!empty($this->manufacturers)) {
             foreach ($this->manufacturers as $id) {
-                Yii::$app->db->createCommand()->insert('{{%shop_discount_manufacturer}}', [
+                Yii::$app->db->createCommand()->insert('{{%discount_manufacturer}}', [
                     'discount_id' => $this->id,
                     'manufacturer_id' => $id,
                 ])->execute();
@@ -137,7 +137,7 @@ class Discount extends \panix\engine\WebModel {
         if (!empty($this->categories)) {
             foreach (array_unique($this->categories) as $id) {
 
-                Yii::$app->db->createCommand()->insert('{{%shop_discount_category}}', [
+                Yii::$app->db->createCommand()->insert('{{%discount_category}}', [
                     'discount_id' => $this->id,
                     'category_id' => $id,
                 ])->execute();
@@ -158,10 +158,10 @@ class Discount extends \panix\engine\WebModel {
      */
     public function clearRelations() {
         Yii::$app->db->createCommand()
-                ->delete('{{%shop_discount_manufacturer}}', 'discount_id=:id', [':id' => $this->id])
+                ->delete('{{%discount_manufacturer}}', 'discount_id=:id', [':id' => $this->id])
                 ->execute();
         Yii::$app->db->createCommand()
-                ->delete('{{%shop_discount_category}}', 'discount_id=:id', [':id' => $this->id])
+                ->delete('{{%discount_category}}', 'discount_id=:id', [':id' => $this->id])
                 ->execute();
     }
 
