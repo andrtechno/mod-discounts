@@ -1,3 +1,8 @@
+<p align="center">
+  <a href="https://corner-cms.com" target="_blank"><img src="https://commerce.corner-cms.com/placeholder?size=70x50&text=f002&fg=333&padding=0" alt="CORNER CMS"/></a>
+  <a href="https://corner-cms.com" target="_blank"><img src="https://commerce.corner-cms.com/placeholder?size=150x50&text=CORNER&fg=333&padding=0" alt="CORNER CMS"/></a>
+</p>
+
 # Модуль скидки  [EN description](README.md)
 
 Модуль скидок для "CORNER CMS"
