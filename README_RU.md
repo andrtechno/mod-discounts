@@ -8,7 +8,7 @@
 
 Предпочтительным способом установки этого модуля является [composer](http://getcomposer.org/download/).
 
-### Либо запустите
+#### Либо запустите
 
 ```
 php composer.phar require --prefer-dist panix/mod-discounts "*"
@@ -22,14 +22,14 @@ php composer.phar require --prefer-dist panix/mod-discounts "*"
 
 в раздел require `composer.json` файла.
 
-### Добавить в веб конфигурацию.
+#### Добавить в веб конфигурацию.
 ```
 'modules' => [
     'discounts' => ['class' => 'panix\discounts\Module'],
 ],
 ```
 
-### Миграция
+#### Миграция
 ```
 php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 ```
