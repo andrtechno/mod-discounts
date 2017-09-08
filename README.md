@@ -41,6 +41,7 @@ php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 - [Module cart Github](https://https://github.com/andrtechno/mod-cart)
 - [Module shop Github](https://https://github.com/andrtechno/mod-shop)
 
+-----------------------
 
 > [![CORNER CMS!](http://www.corner.com.ua/site/skins/black/img/logo.png "CORNER CMS")](https://corner-cms.com)  
 <i>Content Management System "CORNER CMS"</i>  
