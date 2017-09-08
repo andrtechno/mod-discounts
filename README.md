@@ -22,7 +22,7 @@ or add
 
 to the require section of your `composer.json` file.
 
-#### Add to web config.
+#### Add to web config.1
 ```
 'modules' => [
     'discounts' => ['class' => 'panix\discounts\Module'],
