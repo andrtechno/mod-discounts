@@ -1,7 +1,7 @@
 {
     "name": "panix/mod-discounts",
-    "description": "Module user",
-    "keywords": ["corner-cms", "module", "user"],
+    "description": "Module discounts",
+    "keywords": ["corner-cms", "module", "discounts"],
     "homepage": "https://github.com/andrtechno/mod-discounts",
     "type": "module",
     "license": "BSD 3-Clause",
