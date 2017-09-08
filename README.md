@@ -37,10 +37,10 @@ php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 
 ## See also
 - [CORNER CMS](https://corner-cms.com)
-- [Модуль сравнения Github](https://https://github.com/andrtechno/mod-compare)
-- [Module желайний Github](https://https://github.com/andrtechno/mod-wishlist)
-- [Module карзина Github](https://https://github.com/andrtechno/mod-cart)
-- [Module магазин Github](https://https://github.com/andrtechno/mod-shop)
+- [Module compare Github](https://https://github.com/andrtechno/mod-compare)
+- [Module wishlist Github](https://https://github.com/andrtechno/mod-wishlist)
+- [Module cart Github](https://https://github.com/andrtechno/mod-cart)
+- [Module shop Github](https://https://github.com/andrtechno/mod-shop)
 
 ------------------------
 
