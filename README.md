@@ -51,5 +51,7 @@ php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 > [![CORNER CMS!](https://commerce.corner-cms.com/placeholder?size=100x100&text=f002&fg=333 "CORNER CMS")](https://corner-cms.com)  
 <i>Content Management System "CORNER CMS"</i>  
 [www.corner-cms.com](https://corner-cms.com)
-
+<p align="center">
+  <img src="https://commerce.corner-cms.com/placeholder?size=100x100&text=f002&fg=333" alt="CORNER CMS"/>
+</p>
 
