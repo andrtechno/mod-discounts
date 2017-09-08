@@ -33,3 +33,4 @@ to the require section of your `composer.json` file.
 ```
 php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 ```
+![Alt-текст](https://bestbattery.com.ua/image/data/Sale/Sale.png "Скидки")
