@@ -50,20 +50,8 @@ php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 
 ------------------------
 
-> [![CORNER CMS!](http://www.corner.com.ua/site/skins/black/img/logo.png "CORNER CMS")](https://corner-cms.com)  
-<i>Content Management System "CORNER CMS"</i>  
-[www.corner-cms.com](https://corner-cms.com)
 
 > [![CORNER CMS!](https://commerce.corner-cms.com/placeholder?size=100x100&text=f002&fg=333 "CORNER CMS")](https://corner-cms.com)  
 <i>Content Management System "CORNER CMS"</i>  
 [www.corner-cms.com](https://corner-cms.com)
-<p align="center">
-  <img src="https://commerce.corner-cms.com/placeholder?size=100x100&text=f002&fg=333" alt="CORNER CMS"/>
-</p>
-
-
-<p align="center">
-  <img src="https://commerce.corner-cms.com/placeholder?size=50x50&text=f002&fg=333&padding=0" alt="CORNER CMS"/>
-  <img src="https://commerce.corner-cms.com/placeholder?size=200x50&text=CORNER&fg=333&padding=0" alt="CORNER CMS"/>
-</p>
 
