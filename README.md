@@ -34,11 +34,12 @@ to the require section of your `composer.json` file.
 php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 ```
 
-#### См. также
+## См. также
 - [CORNER CMS](https://corner-cms.com)
 - [Module compare Github](https://https://github.com/andrtechno/mod-compare)
 - [Module wishlist Github](https://https://github.com/andrtechno/mod-wishlist)
 - [Module cart Github](https://https://github.com/andrtechno/mod-cart)
+- [Module shop Github](https://https://github.com/andrtechno/mod-shop)
 
 
 > [![CORNER CMS!](http://www.corner.com.ua/site/skins/black/img/logo.png "CORNER CMS")](https://corner-cms.com)  
