@@ -5,7 +5,6 @@
 
 
 ## Установка
-------------
 
 Предпочтительным способом установки этого модуля является [composer](http://getcomposer.org/download/).
 
@@ -30,7 +29,7 @@ php composer.phar require --prefer-dist panix/mod-discounts "*"
 ],
 ```
 
-М### играция
+### Миграция
 ```
 php yii migrate --migrationPath=vendor/panix/mod-discounts/migrations
 ```
