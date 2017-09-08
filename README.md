@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://commerce.corner-cms.com/placeholder?size=50x50&text=f002&fg=333&padding=0" alt="CORNER CMS"/>
+  <img src="https://commerce.corner-cms.com/placeholder?size=70x50&text=f002&fg=333&padding=0" alt="CORNER CMS"/>
   <img src="https://commerce.corner-cms.com/placeholder?size=250x50&text=CORNER&fg=333&padding=0" alt="CORNER CMS"/>
 </p>
 
