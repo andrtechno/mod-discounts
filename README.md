@@ -1,6 +1,7 @@
 <p align="center">
   <img src="https://commerce.corner-cms.com/placeholder?size=70x50&text=f002&fg=333&padding=0" alt="CORNER CMS"/>
   <img src="https://commerce.corner-cms.com/placeholder?size=150x50&text=CORNER&fg=333&padding=0" alt="CORNER CMS"/>
+[![CORNER CMS!](https://commerce.corner-cms.com/placeholder?size=100x100&text=f002&fg=333 "CORNER CMS")](https://corner-cms.com)  
 </p>
 
 
