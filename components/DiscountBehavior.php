@@ -1,14 +1,12 @@
 <?php
 
-Yii::import('mod.discounts.DiscountsModule');
-Yii::import('mod.discounts.models.ShopDiscount');
+namespace panix\mod\discounts\components;
 
-/**
- * Product discount behavior
- *
- * @var $owner ShopProduct
- */
-class DiscountBehavior extends CActiveRecordBehavior {
+use Yii;
+use yii\db\ActiveRecord;
+use panix\mod\discounts\models\Discount;
+
+class DiscountBehavior extends \yii\base\Behavior {
 
     /**
      * @var mixed|null|Discount
@@ -23,25 +21,30 @@ class DiscountBehavior extends CActiveRecordBehavior {
     public $discountSum;
     public $discountSumNum;
     public $discountEndDate;
+
     /**
      * @var null
      */
-    public static $discounts = null;
+    private $discounts = null;
+
+    public function events() {
+        return [
+            ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
+        ];
+    }
 
     /**
      * Attach behavior to model
      * @param $owner
      */
     public function attach($owner) {
-        if (!$owner->isNewRecord && Yii::app()->controller instanceof Controller) {
-            if (DiscountBehavior::$discounts === null) {
-                DiscountBehavior::$discounts = ShopDiscount::model()
-                        ->published()
-                        ->applyDate()
-                        ->findAll();
-            }
+        parent::attach($owner);
+        if ($this->discounts === null) {
 
-            parent::attach($owner);
+            $this->discounts = Discount::find()
+                    ->published()
+                    ->applyDate()
+                    ->all();
         }
     }
 
@@ -49,14 +52,15 @@ class DiscountBehavior extends CActiveRecordBehavior {
      * After find event
      */
     public function afterFind($event) {
+
         if ($this->appliedDiscount !== null)
             return;
 
-        $user = Yii::app()->user;
+        $user = Yii::$app->user;
 
         // Personal product discount
         if (!empty($this->owner->discount)) {
-            $discount = new ShopDiscount();
+            $discount = new Discount();
             $discount->name = Yii::t('app', 'Скидка');
             $discount->sum = $this->owner->discount;
             $this->applyDiscount($discount);
@@ -64,20 +68,22 @@ class DiscountBehavior extends CActiveRecordBehavior {
 
         // Process discount rules
         if (!$this->hasDiscount()) {
-            foreach (DiscountBehavior::$discounts as $discount) {
+
+            foreach ($this->discounts as $discount) {
 
                 $apply = false;
 
                 // Validate category
-                if ($this->searchArray($discount->categories, $this->ownerCategories)) {
+                if ($this->searchArray($discount->discountCategories, $this->ownerCategories)) {
                     $apply = true;
 
                     // Validate manufacturer
-                    if (!empty($discount->manufacturers))
-                        $apply = in_array($this->owner->manufacturer_id, $discount->manufacturers);
+                    if (!empty($discount->discountManufacturers))
+                        $apply = in_array($this->owner->manufacturer_id, $discount->discountManufacturers);
 
                     // Apply discount by user role. Discount for admin disabled.
-                    if (!empty($discount->userRoles) && $user->checkAccess('Admin') !== true) {
+                    if (!empty($discount->userRoles)) {
+                        //if (!empty($discount->userRoles) && $user->checkAccess('Admin') !== true) {
                         $apply = false;
 
                         foreach ($discount->userRoles as $role) {
@@ -89,16 +95,17 @@ class DiscountBehavior extends CActiveRecordBehavior {
                     }
                 }
 
-                if ($apply === true)
+                if ($apply === true) {
                     $this->applyDiscount($discount);
+                }
             }
         }
 
         // Personal discount for users.
-        if (!$user->isGuest && !empty($user->model->discount) && !$this->hasDiscount()) {
-            $discount = new ShopDiscount();
+        if (!$user->isGuest && !empty($user->discount) && !$this->hasDiscount()) {
+            $discount = new Discount();
             $discount->name = Yii::t('app', 'Персональная скидка');
-            $discount->sum = $user->model->discount;
+            $discount->sum = $user->discount;
             $this->applyDiscount($discount);
         }
     }
@@ -107,25 +114,17 @@ class DiscountBehavior extends CActiveRecordBehavior {
      * Apply discount to product and decrease its price
      * @param Discount $discount
      */
-    protected function applyDiscount(ShopDiscount $discount) {
+    protected function applyDiscount(Discount $discount) {
 
         if ($this->appliedDiscount === null) {
+
             $sum = $discount->sum;
             if ('%' === substr($discount->sum, -1, 1)) {
-                if (isset($this->owner->appliedMarkup)) {
+                $sum = $this->owner->price * (int) $sum / 100;
+            }
+            $this->originalPrice = $this->owner->price;
+            $this->discountPrice = $this->owner->price - $sum;
 
-                    $sum = $this->owner->markupPrice * (int) $sum / 100;
-                } else {
-                    $sum = $this->owner->price * (int) $sum / 100;
-                }
-            }
-            if (isset($this->owner->appliedMarkup)) {
-                $this->originalPrice = $this->owner->markupPrice;
-                $this->discountPrice = $this->owner->markupPrice - $sum;
-            } else {
-                $this->originalPrice = $this->owner->price;
-                $this->discountPrice = $this->owner->price - $sum;
-            }
             $this->discountEndDate = $discount->end_date;
             $this->discountSum = $discount->sum;
             $this->discountSumNum = $sum;
@@ -151,11 +150,11 @@ class DiscountBehavior extends CActiveRecordBehavior {
      */
     public function getOwnerCategories() {
         $id = 'discount_product_categories' . $this->owner->date_update;
-        $data = Yii::app()->cache->get($id);
+        $data = Yii::$app->cache->get($id);
 
         if ($data === false) {
-            $data = Html::listData($this->owner->categories, 'id', 'id');
-            Yii::app()->cache->set($id, $data, Yii::app()->settings->get('app', 'cache_time'));
+            $data = \yii\helpers\ArrayHelper::map($this->owner->categories, 'id', 'id');
+            Yii::$app->cache->set($id, $data);
         }
 
         return $data;

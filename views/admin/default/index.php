@@ -1,20 +1,32 @@
+<?php
 
-    <?php
-    $this->widget('ext.adminList.GridView', array(
-        'dataProvider' => $dataProvider,
-        //'afterAjaxUpdate'=>"function(){registerDatePickers()}",
-        //'filter'=>$model,
-        'name'=>$this->pageName,
-    ));
-    ?>
+use yii\widgets\Pjax;
 
-    <?php
-    Yii::app()->clientScript->registerScript("discountDatepickers", "
-    $('input[name=\"ShopDiscount[start_date]\"], input[name=\"ShopDiscount[end_date]\"]').css({'position':'relative','z-index':101});
-function registerDatePickers(){
+Pjax::begin([
+    'id' => 'pjax-container', 'enablePushState' => false,
+    'linkSelector' => 'a:not(.linkTarget)'
+]);
+?>
+<?=panix\engine\grid\GridView::widget([
+    'tableOptions' => ['class' => 'table table-striped'],
+    'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
+    'layout' => $this->render('@app/web/themes/admin/views/layouts/_grid_layout', ['title' => $this->context->pageName]), //'{items}{pager}{summary}'
+    'columns' => [
 
-    $('input[name=\"ShopDiscount[start_date]\"]').datepicker({'dateFormat':'yy-mm-dd'});
-    $('input[name=\"ShopDiscount[end_date]\"]').datepicker({'dateFormat':'yy-mm-dd'});
-}
-registerDatePickers();
-");
+        'name',
+        [
+            'attribute' => 'sum',
+            'format' => 'html',
+            'contentOptions' => ['class' => 'text-center'],
+        ],
+        [
+            'class' => 'panix\engine\grid\columns\ActionColumn',
+            'template' => '{update} {switch} {delete}',
+                ]
+            ]
+        ]);
+        ?>
+        <?php Pjax::end(); ?>
+
+

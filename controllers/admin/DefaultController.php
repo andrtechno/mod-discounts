@@ -1,97 +1,93 @@
 <?php
 
+namespace panix\mod\discounts\controllers\admin;
+
+use Yii;
+use panix\engine\controllers\AdminController;
+use panix\mod\discounts\models\Discount;
+use panix\mod\discounts\models\DiscountSearch;
+
 class DefaultController extends AdminController {
 
-    public function actions() {
-        return array(
-            'delete' => array(
-                'class' => 'ext.adminList.actions.DeleteAction',
-            ),
-            'switch' => array(
-                'class' => 'ext.adminList.actions.SwitchAction',
-            ),
-        );
-    }
-
-    /**
-     * Display discounts list
-     */
     public function actionIndex() {
-        $this->pageName = Yii::t('DiscountsModule.default', 'MODULE_NAME');
-        
-        
-        $this->breadcrumbs = array(
-            Yii::t('ShopModule.default', 'MODULE_NAME') => array('/admin/shop'),
-            $this->pageName
-        );
-        
-        $model = new ShopDiscount('search');
+        $this->pageName = Yii::t('discounts/default', 'MODULE_NAME');
 
-        if (!empty($_GET['ShopDiscount']))
-            $model->attributes = $_GET['ShopDiscount'];
 
-        $dataProvider = $model->orderByName()->search();
+        $this->breadcrumbs[] = [
+            'label' => Yii::t('shop/default', 'MODULE_NAME'),
+            'url' => ['/admin/shop']
+        ];
+        $this->breadcrumbs[] = $this->pageName;
 
-        $this->render('index', array(
-            'model' => $model,
-            'dataProvider' => $dataProvider,
-        ));
+        $this->buttons = [
+            [
+                'icon' => 'icon-add',
+                'label' => Yii::t('discounts/default', 'CREATE_PRODUCT'),
+                'url' => ['create'],
+                'options' => ['class' => 'btn btn-success']
+            ]
+        ];
+        $searchModel = new DiscountSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        return $this->render('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+        ]);
     }
-
 
     /**
      * Update discount
      * @param bool $new
      * @throws CHttpException
      */
-    public function actionUpdate($new = false) {
-        if ($new === true)
-            $model = new ShopDiscount;
+    public function actionUpdate($id = false) {
+        if ($id === true)
+            $model = new Discount;
         else
-            $model = ShopDiscount::model()->findByPk($_GET['id']);
+            $model = Discount::findOne($id);
 
         if (!$model)
-            throw new CHttpException(404, Yii::t('DiscountsModule.default', 'NO_FOUND_DISCOUNT'));
+            $this->error404(Yii::t('discounts/default', 'NO_FOUND_DISCOUNT'));
 
 
 
 
-        $this->pageName = ($model->isNewRecord) ? Yii::t('DiscountsModule.default', 'Создание скидки') :
-                Yii::t('DiscountsModule.admin', 'Редактирование скидки');
+        $this->pageName = ($model->isNewRecord) ? Yii::t('discounts/default', 'Создание скидки') :
+                Yii::t('discounts/default', 'Редактирование скидки');
 
 
-        $this->breadcrumbs = array(
-            Yii::t('ShopModule.default', 'MODULE_NAME') => array('/admin/shop'),
-            Yii::t('DiscountsModule.default', 'MODULE_NAME') => $this->createUrl('index'),
-            $this->pageName
-        );
-        
-        Yii::app()->clientScript->registerScriptFile(
-                $this->module->assetsUrl . '/admin/default.update.js', CClientScript::POS_END
-        );
+        $this->breadcrumbs[] = [
+            'label' => Yii::t('shop/default', 'MODULE_NAME'),
+            'url' => ['/admin/shop']
+        ];
+        $this->breadcrumbs[] = [
+            'label' => Yii::t('discounts/default', 'MODULE_NAME'),
+            'url' => ['index']
+        ];
+        $this->breadcrumbs[] = $this->pageName;
+        \panix\mod\discounts\assets\DiscountAsset::register($this->view);
 
-        if (Yii::app()->request->isPostRequest) {
-            if (!isset($_POST['ShopDiscount']['manufacturers']))
-                $model->manufacturers = array();
-            if (!isset($_POST['ShopDiscount']['categories']))
-                $model->categories = array();
-            if (!isset($_POST['ShopDiscount']['userRoles']))
-                $model->userRoles = array();
 
-            $model->attributes = $_POST['ShopDiscount'];
+        $post = Yii::$app->request->post();
+
+
+
+
+        if ($model->load($post) && $model->validate()) {
+
+            if (!isset($post['Discount']['manufacturers']))
+                $model->discountManufacturers = [];
+            if (!isset($post['Discount']['categories']))
+                $model->discountCategories = [];
+            if (!isset($post['Discount']['userRoles']))
+                $model->userRoles = [];
+
+            $model->save();
+            // return $this->redirect(['index']);
         }
 
-        $form = new TabForm($model->getForm(), $model);
-        $form->additionalTabs[Yii::t('DiscountsModule.admin', 'Категории')] = array('content' => $this->renderPartial('_categories', array('model' => $model), true));
-
-        if (Yii::app()->request->isPostRequest) {
-            if ($model->validate()) {
-                $model->save();
-                $this->redirect(array('index'));
-            }
-        }
-
-        $this->render('update', array('model' => $model, 'form' => $form));
+        return $this->render('update', ['model' => $model]);
     }
 
 }

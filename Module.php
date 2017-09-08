@@ -1,72 +1,48 @@
 <?php
 
-Yii::import('mod.shop.ShopModule');
+namespace panix\mod\discounts;
 
-/**
- * Модуль скидок товаров
- * 
- * @author CORNER CMS development team <dev@corner-cms.com>
- * @license http://corner-cms.com/license.txt CORNER CMS License
- * @link http://corner-cms.com CORNER CMS
- * @package modules
- * @subpackage commerce.discounts
- * @uses WebModule
- */
-class DiscountsModule extends WebModule {
+use Yii;
+use panix\engine\WebModule;
 
-    public function init() {
-        $this->setImport(array(
-            $this->id . '.models.*',
-            $this->id . '.components.*',
-        ));
-        $this->setIcon('icon-discount');
+class Module extends WebModule {
+
+
+
+    public function getInfo() {
+        return [
+            'name' => Yii::t('discounts/default', 'MODULE_NAME'),
+            'author' => 'andrew.panix@gmail.com',
+            'version' => '1.0',
+            'icon' => 'icon-discounts',
+            'description' => Yii::t('discounts/default', 'MODULE_DESC'),
+            'url' => ['/admin/discounts'],
+        ];
+    }
+    public function getNav() {
+        return [
+            [
+                'label' => Yii::t('discounts/default','MODUL_NAME'),
+                "url" => ['/admin/discounts'],
+                'icon' => 'icon-discount'
+            ],
+        ];
     }
 
-    public function afterInstall() {
-        if (Yii::app()->hasModule('shop')) {
-            Yii::app()->database->import($this->id);
-            return parent::afterInstall();
-        } else {
-            Yii::app()->controller->setNotify('Ошибка, Модуль интернет-магазин не устрановлен.', 'error');
-            return false;
-        }
-    }
-
-    public function afterUninstall() {
-        $db = Yii::app()->db;
-        $tablesArray = array(
-            ShopDiscount::model()->tableName(),
-            $db->tablePrefix . 'shop_discount_category',
-            $db->tablePrefix . 'shop_discount_manufacturer'
-        );
-        foreach ($tablesArray as $table) {
-            $db->createCommand()->dropTable($table);
-        }
-        GridColumns::model()->deleteAll("grid_id='shopdiscount-grid'");
-        return parent::afterUninstall();
-    }
-
-    public function getAdminMenu() {
+    public function getAdminMenu2() {
         return array(
             'shop' => array(
                 'items' => array(
                     array(
-                        'label' => $this->name,
-                        'url' => $this->adminHomeUrl,
-                        'active' => $this->getIsActive('discounts/default'),
-                        'icon' => Html::icon($this->icon),
-                        'visible'=>Yii::app()->user->openAccess(array('Discounts.Default.*','Discounts.Default.Index')),
+                        'label' => Yii::t('discounts/default','MODUL_NAME'),
+                        'url' => ['/admin/discounts'],
+                        'icon' => 'sa',
                     ),
                 ),
             ),
         );
     }
 
-    public function getAdminSidebarMenu() {
-        Yii::import('mod.admin.widgets.EngineMainMenu');
-        $mod = new EngineMainMenu;
-        $items = $mod->findMenu('shop');
-        return $items['items'];
-    }
+ 
 
 }

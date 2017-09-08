@@ -31,12 +31,3 @@ CREATE TABLE IF NOT EXISTS `{prefix}shop_discount_manufacturer` (
   KEY `discount_id` (`discount_id`),
   KEY `manufacturer_id` (`manufacturer_id`)
 ) ENGINE=InnoDB;
-
-
-INSERT INTO `{prefix}authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
-('Discounts.Default.*', 1, 'Скидки (*)', NULL, 'N;'),
-('Discounts.Default.Index', 0, 'Список скидок', NULL, 'N;'),
-('Discounts.Default.Delete', 0, 'Удаление скидок', NULL, 'N;'),
-('Discounts.Default.Switch', 0, 'Скрыть/показать скидку', NULL, 'N;'),
-('Discounts.Default.Update', 0, 'Редактирование скидок', NULL, 'N;'),
-('Discounts.Default.Create', 0, 'Добавление скидок', NULL, 'N;');
