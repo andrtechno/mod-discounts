@@ -2,7 +2,7 @@
 
 use yii\db\Migration;
 
-class m170908_104527_init extends Migration {
+class m170908_104527_discounts extends Migration {
 
     public function up() {
         $tableOptions = null;
