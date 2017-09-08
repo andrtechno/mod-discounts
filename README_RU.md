@@ -1,4 +1,4 @@
-# Модуль скидки  [EN](README.md)
+# Модуль скидки  [EN description](README.md)
 
 Модуль скидок для "CORNER CMS"
 

@@ -1,4 +1,4 @@
-# Module discount [RU](README_RU.md)
+# Module discount [RU описание](README_RU.md)
 
 Module discount for "CORNER CMS"
 
@@ -23,7 +23,7 @@ or add
 
 to the require section of your `composer.json` file.
 
-#### Add to web config.1
+#### Add to web config.
 ```
 'modules' => [
     'discounts' => ['class' => 'panix\discounts\Module'],
