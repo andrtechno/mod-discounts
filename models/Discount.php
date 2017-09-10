@@ -4,7 +4,7 @@ namespace panix\mod\discounts\models;
 
 use Yii;
 
-class Discount extends \panix\engine\WebModel {
+class Discount extends \panix\engine\db\ActiveRecord {
 
     const MODULE_ID = 'discounts';
 
