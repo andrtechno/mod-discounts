@@ -11,7 +11,7 @@ class Module extends WebModule {
 
     public function getInfo() {
         return [
-            'name' => Yii::t('discounts/default', 'MODULE_NAME'),
+            'label' => Yii::t('discounts/default', 'MODULE_NAME'),
             'author' => 'andrew.panix@gmail.com',
             'version' => '1.0',
             'icon' => 'icon-discounts',
