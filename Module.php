@@ -7,42 +7,31 @@ use panix\engine\WebModule;
 
 class Module extends WebModule {
 
-
+    public $icon = 'discount';
 
     public function getInfo() {
         return [
             'label' => Yii::t('discounts/default', 'MODULE_NAME'),
             'author' => 'andrew.panix@gmail.com',
             'version' => '1.0',
-            'icon' => 'icon-discounts',
+            'icon' => $this->icon,
             'description' => Yii::t('discounts/default', 'MODULE_DESC'),
             'url' => ['/admin/discounts'],
         ];
     }
-    public function getNav() {
+
+    public function getAdminMenu() {
         return [
-            [
-                'label' => Yii::t('discounts/default','MODUL_NAME'),
-                "url" => ['/admin/discounts'],
-                'icon' => 'icon-discount'
+            'shop' => [
+                'items' => [
+                    [
+                        'label' => Yii::t('discounts/default', 'MODULE_NAME'),
+                        'url' => ['/admin/discounts'],
+                        'icon' => $this->icon,
+                    ],
+                ],
             ],
         ];
     }
-
-    public function getAdminMenu2() {
-        return array(
-            'shop' => array(
-                'items' => array(
-                    array(
-                        'label' => Yii::t('discounts/default','MODUL_NAME'),
-                        'url' => ['/admin/discounts'],
-                        'icon' => 'sa',
-                    ),
-                ),
-            ),
-        );
-    }
-
- 
 
 }

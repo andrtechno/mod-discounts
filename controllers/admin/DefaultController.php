@@ -22,7 +22,7 @@ class DefaultController extends AdminController {
         $this->buttons = [
             [
                 'icon' => 'icon-add',
-                'label' => Yii::t('discounts/default', 'CREATE_PRODUCT'),
+                'label' => Yii::t('discounts/default', 'CREATE_DISCOUNT'),
                 'url' => ['create'],
                 'options' => ['class' => 'btn btn-success']
             ]
@@ -84,7 +84,12 @@ class DefaultController extends AdminController {
                 $model->userRoles = [];
 
             $model->save();
-            // return $this->redirect(['index']);
+            Yii::$app->session->addFlash('success', \Yii::t('app', 'SUCCESS_CREATE'));
+            if ($model->isNewRecord) {
+                return Yii::$app->getResponse()->redirect(['/admin/discounts']);
+            } else {
+                return Yii::$app->getResponse()->redirect(['/admin/discounts/default/update', 'id' => $model->id]);
+            }
         }
 
         return $this->render('update', ['model' => $model]);
