@@ -20,6 +20,12 @@ class Module extends WebModule {
         ];
     }
 
+    public function getAdminSidebar() {
+        $mod = new \panix\engine\widgets\nav\Nav;
+        $items = $mod->findMenu('shop');
+        return $items['items'];
+    }
+
     public function getAdminMenu() {
         return [
             'shop' => [
