@@ -51,7 +51,7 @@ class DiscountBehavior extends \yii\base\Behavior {
     /**
      * After find event
      */
-    public function afterFind($event) {
+    public function afterFind() {
 
         if ($this->appliedDiscount !== null)
             return;
