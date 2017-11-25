@@ -1,19 +1,20 @@
 <?php
 
 use yii\widgets\Pjax;
-
+use panix\engine\grid\GridView;
 Pjax::begin([
-    'id' => 'pjax-container', 'enablePushState' => false,
+    'id' => 'pjax-container',
+    'enablePushState' => false,
     'linkSelector' => 'a:not(.linkTarget)'
 ]);
-?>
-<?=panix\engine\grid\GridView::widget([
+
+
+echo GridView::widget([
     'tableOptions' => ['class' => 'table table-striped'],
     'dataProvider' => $dataProvider,
     'filterModel' => $searchModel,
     'layoutOptions' => ['title' => $this->context->pageName],
     'columns' => [
-
         'name',
         [
             'attribute' => 'sum',
@@ -22,11 +23,10 @@ Pjax::begin([
         ],
         [
             'class' => 'panix\engine\grid\columns\ActionColumn',
-            'template' => '{update} {switch} {delete}',
-                ]
-            ]
-        ]);
-        ?>
-        <?php Pjax::end(); ?>
+        ]
+    ]
+]);
+Pjax::end();
+
 
 

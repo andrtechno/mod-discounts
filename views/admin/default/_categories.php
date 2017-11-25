@@ -1,6 +1,6 @@
 <?php
-use panix\mod\shop\models\ShopCategoryNode;
-use panix\mod\shop\models\ShopCategory;
+use panix\mod\shop\models\CategoryNode;
+use panix\mod\shop\models\Category;
 ?>
 <div class="form-group">
     <?= Yii::t('app', "Здесь вы можете указать категории, для которых будет доступна скидка."); ?>
@@ -21,7 +21,7 @@ echo \panix\ext\jstree\JsTree::widget([
     'id' => 'DiscountCategoryTree',
     'name' => 'jstree',
     'allOpen'=>true,
-    'data' => ShopCategoryNode::fromArray(ShopCategory::findOne(1)->children()->all()),
+    'data' => CategoryNode::fromArray(Category::findOne(1)->children()->all()),
     'core' => [
         'strings' => [
             'Loading ...' => Yii::t('app', 'LOADING')

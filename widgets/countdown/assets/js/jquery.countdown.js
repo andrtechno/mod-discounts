@@ -74,7 +74,7 @@
 
 
 	function init(elem, options){
-		elem.addClass('countdownHolder');
+		/*elem.addClass('countdownHolder');
 
 		// Creating the markup inside the container
 		$.each(['Days','Hours','Minutes','Seconds'],function(i){
@@ -90,7 +90,7 @@
 			if(this!="Seconds"){
 				elem.append('<span class="countDiv countDiv'+i+'"></span>');
 			}
-		});
+		});*/
 
 	}
 

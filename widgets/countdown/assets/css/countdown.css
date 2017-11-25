@@ -1,0 +1,35 @@
+.timing-wrapper {
+
+}
+.timing-wrapper .box-wrapper {
+    display: table;
+    text-align: center;
+    margin-right: 4px;
+    float: left;
+}
+.timing-wrapper .box-wrapper .box {
+    background-color: red;
+    color: #333;
+    display: table-cell;
+    height: 44px;
+    vertical-align: middle;
+    width: 45px;
+    line-height: 15px;
+
+}
+.timing-wrapper .box-wrapper .box .key {
+    display: block;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-family:'Open Sans', sans-serif
+}
+.timing-wrapper .box-wrapper .box .value {
+    display: block;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing:0.5px
+}
+.timing-wrapper .box-wrapper:last-child {
+    margin-right: 0px;
+}

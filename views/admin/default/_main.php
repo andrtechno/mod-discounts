@@ -2,7 +2,7 @@
 
 
 use yii\helpers\ArrayHelper;
-use panix\mod\shop\models\ShopManufacturer;
+use panix\mod\shop\models\Manufacturer;
 use panix\engine\jui\DatePicker;
 
 
@@ -17,7 +17,7 @@ use panix\engine\jui\DatePicker;
 
 
 <?= $form->field($model, 'manufacturers')
-        ->dropDownList(ArrayHelper::map(ShopManufacturer::find()->all(), 'id', 'name'), [
+        ->dropDownList(ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'), [
     'prompt' => 'Укажите производителя',
             'multiple'=>'multiple'
 ])->hint('Чтобы скидка заработала, необходимо указать категорию'); ?>
