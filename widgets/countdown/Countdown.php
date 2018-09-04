@@ -14,7 +14,6 @@ class Countdown extends \panix\engine\data\Widget {
       
             if ($this->model->appliedDiscount && $this->model->discountEndDate) {
                 $this->registerScript();
-                      $this->registerTranslations();
                 return $this->render($this->skin);
             }
         }
@@ -52,16 +51,5 @@ class Countdown extends \panix\engine\data\Widget {
          ", \yii\web\View::POS_HEAD, 'Countdown');
         //$this->view->registerJsFile(Yii::$app->assetManager->publish('@discounts/widgets/countdown/assets').'/jquery.countdown.min.js');
         CountdownAsset::register($this->view);
-    }
-    protected function registerTranslations($id='widgets/countdown') {
-        $lang = Yii::$app->language;
-        Yii::$app->i18n->translations['discounts/widgets/countdown/*'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@discounts/widgets/countdown/messages',
-            'fileMap' => [
-              'default' => 'default.php',
-            ]
-        ];
-       // print_r(Yii::$app->i18n->translations);die;
     }
 }

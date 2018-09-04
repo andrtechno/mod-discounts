@@ -1,15 +1,15 @@
 {
     "name": "panix/mod-discounts",
     "description": "Module discounts",
-    "keywords": ["corner-cms", "module", "discounts"],
+    "keywords": ["pixelion-cms", "module", "discounts"],
     "homepage": "https://github.com/andrtechno/mod-discounts",
     "type": "yii2-extension",
     "license": "BSD 3-Clause",
     "authors": [
         {
-            "name": "CORNER CMS",
-            "email": "dev@corner-cms.com",
-            "homepage": "http://www.corner-cms.com/"
+            "name": "PIXELION CMS",
+            "email": "dev@pixelion.com.ua",
+            "homepage": "https://pixelion.com.ua"
         }
     ],
     "require": {
