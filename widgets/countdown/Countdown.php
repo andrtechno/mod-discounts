@@ -53,7 +53,7 @@ class Countdown extends \panix\engine\data\Widget {
         //$this->view->registerJsFile(Yii::$app->assetManager->publish('@discounts/widgets/countdown/assets').'/jquery.countdown.min.js');
         CountdownAsset::register($this->view);
     }
-    protected function registerTranslations($id='widgets/countdown') {
+    public function registerTranslations($id='widgets/countdown') {
         $lang = Yii::$app->language;
         Yii::$app->i18n->translations['discounts/widgets/countdown/*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
