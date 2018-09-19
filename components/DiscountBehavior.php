@@ -57,7 +57,9 @@ class DiscountBehavior extends \yii\base\Behavior {
             return;
 
         $user = Yii::$app->user;
-
+        if (Yii::$app instanceof \yii\console\Application) {
+            $user = null;
+        }
         // Personal product discount
         if (!empty($this->owner->discount)) {
             $discount = new Discount();

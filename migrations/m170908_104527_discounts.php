@@ -1,16 +1,26 @@
 <?php
 
-use yii\db\Migration;
+//namespace panix\mod\discounts\migrations;
 
-class m170908_104527_discounts extends Migration {
+/**
+ * Generation migrate by PIXELION CMS
+ *
+ * @author PIXELION CMS development team <dev@pixelion.com.ua>
+ * @link http://pixelion.com.ua PIXELION CMS
+ *
+ * Class m170908_104527_discounts
+ */
 
-    public function up() {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
+use panix\engine\db\Migration;
+use panix\mod\discounts\models\Discount;
 
-        $this->createTable('{{%discount}}', [
+class m170908_104527_discounts extends Migration
+{
+
+    public function up()
+    {
+
+        $this->createTable(Discount::tableName(), [
             'id' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
             'sum' => $this->string(10)->notNull(),
@@ -18,22 +28,21 @@ class m170908_104527_discounts extends Migration {
             'end_date' => $this->datetime(),
             'roles' => $this->string(255),
             'switch' => $this->boolean()->defaultValue(1),
-                ], $tableOptions);
+        ], $this->tableOptions);
 
 
         $this->createTable('{{%discount_category}}', [
             'id' => $this->primaryKey(),
             'discount_id' => $this->integer(),
             'category_id' => $this->integer(),
-        ], $tableOptions);
-
+        ], $this->tableOptions);
 
 
         $this->createTable('{{%discount_manufacturer}}', [
             'id' => $this->primaryKey(),
             'discount_id' => $this->integer(),
             'manufacturer_id' => $this->integer(),
-        ], $tableOptions);
+        ], $this->tableOptions);
 
 
         $this->createIndex('switch', '{{%discount}}', 'switch', 0);
@@ -47,7 +56,8 @@ class m170908_104527_discounts extends Migration {
         $this->createIndex('manufacturer_id', '{{%discount_manufacturer}}', 'manufacturer_id', 0);
     }
 
-    public function down() {
+    public function down()
+    {
         $this->dropTable('{{%discount}}');
         $this->dropTable('{{%discount_category}}');
         $this->dropTable('{{%discount_manufacturer}}');
