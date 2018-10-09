@@ -1,6 +1,6 @@
 <?php
 
-//namespace panix\mod\discounts\migrations;
+namespace panix\mod\discounts\migrations;
 
 /**
  * Generation migrate by PIXELION CMS
