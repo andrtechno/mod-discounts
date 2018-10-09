@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}discount` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `{prefix}discount_category` (
+CREATE TABLE IF NOT EXISTS `{prefix}discount__category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `discount_id` int(11) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `{prefix}discount_category` (
 ) ENGINE=InnoDB;
 
 
-CREATE TABLE IF NOT EXISTS `{prefix}discount_manufacturer` (
+CREATE TABLE IF NOT EXISTS `{prefix}discount__manufacturer` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `discount_id` int(11) DEFAULT NULL,
   `manufacturer_id` int(11) DEFAULT NULL,

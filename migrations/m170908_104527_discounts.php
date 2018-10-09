@@ -31,14 +31,14 @@ class m170908_104527_discounts extends Migration
         ], $this->tableOptions);
 
 
-        $this->createTable('{{%discount_category}}', [
+        $this->createTable('{{%discount__category}}', [
             'id' => $this->primaryKey(),
             'discount_id' => $this->integer(),
             'category_id' => $this->integer(),
         ], $this->tableOptions);
 
 
-        $this->createTable('{{%discount_manufacturer}}', [
+        $this->createTable('{{%discount__manufacturer}}', [
             'id' => $this->primaryKey(),
             'discount_id' => $this->integer(),
             'manufacturer_id' => $this->integer(),
@@ -49,18 +49,18 @@ class m170908_104527_discounts extends Migration
         $this->createIndex('start_date', '{{%discount}}', 'start_date', 0);
         $this->createIndex('end_date', '{{%discount}}', 'end_date', 0);
 
-        $this->createIndex('discount_id', '{{%discount_category}}', 'discount_id', 0);
-        $this->createIndex('category_id', '{{%discount_category}}', 'category_id', 0);
+        $this->createIndex('discount_id', '{{%discount__category}}', 'discount_id', 0);
+        $this->createIndex('category_id', '{{%discount__category}}', 'category_id', 0);
 
-        $this->createIndex('discount_id', '{{%discount_manufacturer}}', 'discount_id', 0);
-        $this->createIndex('manufacturer_id', '{{%discount_manufacturer}}', 'manufacturer_id', 0);
+        $this->createIndex('discount_id', '{{%discount__manufacturer}}', 'discount_id', 0);
+        $this->createIndex('manufacturer_id', '{{%discount__manufacturer}}', 'manufacturer_id', 0);
     }
 
     public function down()
     {
         $this->dropTable('{{%discount}}');
-        $this->dropTable('{{%discount_category}}');
-        $this->dropTable('{{%discount_manufacturer}}');
+        $this->dropTable('{{%discount__category}}');
+        $this->dropTable('{{%discount__manufacturer}}');
     }
 
 }
