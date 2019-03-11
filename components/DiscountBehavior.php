@@ -5,8 +5,10 @@ namespace panix\mod\discounts\components;
 use Yii;
 use yii\db\ActiveRecord;
 use panix\mod\discounts\models\Discount;
+use yii\base\Behavior;
 
-class DiscountBehavior extends \yii\base\Behavior {
+class DiscountBehavior extends Behavior
+{
 
     /**
      * @var mixed|null|Discount
@@ -27,7 +29,8 @@ class DiscountBehavior extends \yii\base\Behavior {
      */
     private $discounts = null;
 
-    public function events() {
+    public function events()
+    {
         return [
             ActiveRecord::EVENT_AFTER_FIND => 'afterFind',
         ];
@@ -37,21 +40,25 @@ class DiscountBehavior extends \yii\base\Behavior {
      * Attach behavior to model
      * @param $owner
      */
-    public function attach($owner) {
-        parent::attach($owner);
-        if ($this->discounts === null) {
+    public function attach($owner)
+    {
+        if (!$owner->isNewRecord) {
+            if ($this->discounts === null) {
 
-            $this->discounts = Discount::find()
+                $this->discounts = Discount::find()
                     ->published()
                     ->applyDate()
                     ->all();
+            }
+            parent::attach($owner);
         }
     }
 
     /**
      * After find event
      */
-    public function afterFind() {
+    public function afterFind()
+    {
 
         if ($this->appliedDiscount !== null)
             return;
@@ -116,13 +123,14 @@ class DiscountBehavior extends \yii\base\Behavior {
      * Apply discount to product and decrease its price
      * @param Discount $discount
      */
-    protected function applyDiscount(Discount $discount) {
+    protected function applyDiscount(Discount $discount)
+    {
 
         if ($this->appliedDiscount === null) {
 
             $sum = $discount->sum;
             if ('%' === substr($discount->sum, -1, 1)) {
-                $sum = $this->owner->price * (int) $sum / 100;
+                $sum = $this->owner->price * (int)$sum / 100;
             }
             $this->originalPrice = $this->owner->price;
             $this->discountPrice = $this->owner->price - $sum;
@@ -138,9 +146,10 @@ class DiscountBehavior extends \yii\base\Behavior {
      * Search value from $a in $b
      * @param array $a
      * @param array $b
-     * @return array
+     * @return bool
      */
-    protected function searchArray(array $a, array $b) {
+    protected function searchArray(array $a, array $b)
+    {
         foreach ($a as $v)
             if (in_array($v, $b))
                 return true;
@@ -150,7 +159,8 @@ class DiscountBehavior extends \yii\base\Behavior {
     /**
      * @return array
      */
-    public function getOwnerCategories() {
+    public function getOwnerCategories()
+    {
         $id = 'discount_product_categories' . $this->owner->date_update;
         $data = Yii::$app->cache->get($id);
 
@@ -165,7 +175,8 @@ class DiscountBehavior extends \yii\base\Behavior {
     /**
      * @return bool
      */
-    public function hasDiscount() {
+    public function hasDiscount()
+    {
         return !($this->appliedDiscount === null);
     }
 

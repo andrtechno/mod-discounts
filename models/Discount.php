@@ -64,7 +64,7 @@ class Discount extends \panix\engine\db\ActiveRecord {
         if (is_array($this->_discountCategories))
             return $this->_discountCategories;
 
-        $this->_discountCategories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount_category}} WHERE discount_id=:id')
+        $this->_discountCategories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
                 ->bindValue(':id', $this->id)
                 ->queryColumn();
 
@@ -101,7 +101,7 @@ class Discount extends \panix\engine\db\ActiveRecord {
 
 
 
-        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount_manufacturer}} WHERE discount_id=:id')
+        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
                 ->bindValue(':id', $this->id)
                 ->queryColumn();
 
@@ -126,7 +126,7 @@ class Discount extends \panix\engine\db\ActiveRecord {
         // Process manufacturers
         if (!empty($this->manufacturers)) {
             foreach ($this->manufacturers as $id) {
-                Yii::$app->db->createCommand()->insert('{{%discount_manufacturer}}', [
+                Yii::$app->db->createCommand()->insert('{{%discount__manufacturer}}', [
                     'discount_id' => $this->id,
                     'manufacturer_id' => $id,
                 ])->execute();
@@ -137,7 +137,7 @@ class Discount extends \panix\engine\db\ActiveRecord {
         if (!empty($this->categories)) {
             foreach (array_unique($this->categories) as $id) {
 
-                Yii::$app->db->createCommand()->insert('{{%discount_category}}', [
+                Yii::$app->db->createCommand()->insert('{{%discount__category}}', [
                     'discount_id' => $this->id,
                     'category_id' => $id,
                 ])->execute();
@@ -158,10 +158,10 @@ class Discount extends \panix\engine\db\ActiveRecord {
      */
     public function clearRelations() {
         Yii::$app->db->createCommand()
-                ->delete('{{%discount_manufacturer}}', 'discount_id=:id', [':id' => $this->id])
+                ->delete('{{%discount__manufacturer}}', 'discount_id=:id', [':id' => $this->id])
                 ->execute();
         Yii::$app->db->createCommand()
-                ->delete('{{%discount_category}}', 'discount_id=:id', [':id' => $this->id])
+                ->delete('{{%discount__category}}', 'discount_id=:id', [':id' => $this->id])
                 ->execute();
     }
 
