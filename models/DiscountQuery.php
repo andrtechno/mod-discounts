@@ -11,8 +11,7 @@ class DiscountQuery extends ActiveQuery {
     }
 
     public function applyDate() {
-        $date = date('Y-m-d H:i:s');
-        return $this->andWhere(['<=', 'start_date', $date])->andWhere(['>=', 'end_date', $date]);
+        return $this->andWhere(['<=', 'start_date', time()])->andWhere(['>=', 'end_date', time()]);
     }
 
 }

@@ -46,6 +46,21 @@ class Discount extends ActiveRecord
         return new DiscountQuery(get_called_class());
     }
 
+
+    public function beforeSave($insert)
+    {
+        $this->start_date = strtotime($this->start_date);
+        $this->end_date = strtotime($this->end_date);
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        $this->start_date = date('Y-m-d H:i:s', $this->start_date);
+        $this->end_date = date('Y-m-d H:i:s', $this->end_date);
+        parent::afterFind();
+    }
+
     /**
      * @return array validation rules for model attributes.
      */

@@ -59,7 +59,7 @@ class DefaultController extends AdminController {
 
         $this->breadcrumbs[] = [
             'label' => Yii::t('shop/default', 'MODULE_NAME'),
-            'url' => ['/admin/shop']
+            'url' => ['/shop']
         ];
         $this->breadcrumbs[] = [
             'label' => Yii::t('discounts/default', 'MODULE_NAME'),
@@ -86,9 +86,9 @@ class DefaultController extends AdminController {
             $model->save();
             Yii::$app->session->setFlash('success', \Yii::t('app', 'SUCCESS_CREATE'));
             if ($model->isNewRecord) {
-                return Yii::$app->getResponse()->redirect(['/admin/discounts']);
+                return Yii::$app->getResponse()->redirect(['/discounts']);
             } else {
-                return Yii::$app->getResponse()->redirect(['/admin/discounts/default/update', 'id' => $model->id]);
+                return Yii::$app->getResponse()->redirect(['/discounts/default/update', 'id' => $model->id]);
             }
         }
 

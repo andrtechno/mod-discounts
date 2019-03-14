@@ -24,10 +24,12 @@ class m170908_104527_discounts extends Migration
             'id' => $this->primaryKey(),
             'name' => $this->string(255)->notNull(),
             'sum' => $this->string(10)->notNull(),
-            'start_date' => $this->datetime(),
-            'end_date' => $this->datetime(),
+            'start_date' => $this->integer(11)->null(),
+            'end_date' => $this->integer(11)->null(),
             'roles' => $this->string(255),
             'switch' => $this->boolean()->defaultValue(1),
+            'created_at' => $this->integer(11)->null(),
+            'updated_at' => $this->integer(11)->null(),
         ], $this->tableOptions);
 
 
