@@ -42,16 +42,8 @@ class DiscountBehavior extends Behavior
      */
     public function attach($owner)
     {
-        if (!$owner->isNewRecord) {
-            if ($this->discounts === null) {
-
-                $this->discounts = Discount::find()
-                    ->published()
-                    ->applyDate()
-                    ->all();
-            }
-            parent::attach($owner);
-        }
+        $this->owner = $owner;
+        parent::attach($owner);
     }
 
     /**
@@ -59,6 +51,16 @@ class DiscountBehavior extends Behavior
      */
     public function afterFind()
     {
+
+        if (!$this->owner->isNewRecord) {
+            if ($this->discounts === null) {
+
+                $this->discounts = Discount::find()
+                    ->published()
+                    ->applyDate()
+                    ->all();
+            }
+        }
 
         if ($this->appliedDiscount !== null)
             return;
@@ -83,26 +85,29 @@ class DiscountBehavior extends Behavior
                 $apply = false;
 
                 // Validate category
-                if ($this->searchArray($discount->discountCategories, $this->ownerCategories)) {
+                if ($this->searchArray($discount->discountCategories, array_values($this->ownerCategories))) {
                     $apply = true;
+                }
 
-                    // Validate manufacturer
-                    if (!empty($discount->discountManufacturers))
-                        $apply = in_array($this->owner->manufacturer_id, $discount->discountManufacturers);
+                // Validate manufacturer
+                if (!empty($discount->discountManufacturers)) {
+                    $apply = in_array($this->owner->manufacturer_id, $discount->discountManufacturers);
+                }
 
-                    // Apply discount by user role. Discount for admin disabled.
-                    if (!empty($discount->userRoles)) {
-                        //if (!empty($discount->userRoles) && $user->checkAccess('Admin') !== true) {
-                        $apply = false;
 
-                        foreach ($discount->userRoles as $role) {
-                            if ($user->checkAccess($role)) {
-                                $apply = true;
-                                break;
-                            }
+                // Apply discount by user role. Discount for admin disabled.
+                /*if (!empty($discount->userRoles)) {
+                    //if (!empty($discount->userRoles) && $user->checkAccess('Admin') !== true) {
+                    $apply = false;
+
+                    foreach ($discount->userRoles as $role) {
+                        if ($user->checkAccess($role)) {
+                            $apply = true;
+                            break;
                         }
                     }
-                }
+                }*/
+
 
                 if ($apply === true) {
                     $this->applyDiscount($discount);
@@ -139,7 +144,9 @@ class DiscountBehavior extends Behavior
             $this->discountSum = $discount->sum;
             $this->discountSumNum = $sum;
             $this->appliedDiscount = $discount;
+
         }
+
     }
 
     /**
@@ -161,13 +168,15 @@ class DiscountBehavior extends Behavior
      */
     public function getOwnerCategories()
     {
-        $id = 'discount_product_categories' . $this->owner->date_update;
-        $data = Yii::$app->cache->get($id);
+       // $id = 'discount_product_categories' . $this->owner->date_update;
+        //$data = Yii::$app->cache->get($id);
 
-        if ($data === false) {
+
+        //if ($data === false) {
             $data = \yii\helpers\ArrayHelper::map($this->owner->categories, 'id', 'id');
-            Yii::$app->cache->set($id, $data);
-        }
+            //$data = $this->owner->categories;
+            //Yii::$app->cache->set($id, $data);
+       // }
 
         return $data;
     }

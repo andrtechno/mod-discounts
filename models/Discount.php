@@ -3,8 +3,10 @@
 namespace panix\mod\discounts\models;
 
 use Yii;
+use panix\engine\db\ActiveRecord;
 
-class Discount extends \panix\engine\db\ActiveRecord {
+class Discount extends ActiveRecord
+{
 
     const MODULE_ID = 'discounts';
 
@@ -23,28 +25,32 @@ class Discount extends \panix\engine\db\ActiveRecord {
     protected $_discountCategories;
     protected $_discountManufacturers;
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return \yii\helpers\ArrayHelper::merge([
-                    'manufacturers' => self::t('MANUFACTURERS'),
-                    'userRoles' => self::t('USER_ROLES'),
-                        ], parent::attributeLabels());
+            'manufacturers' => self::t('MANUFACTURERS'),
+            'userRoles' => self::t('USER_ROLES'),
+        ], parent::attributeLabels());
     }
 
     /**
      * @return string the associated database table name
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return '{{%discount}}';
     }
 
-    public static function find() {
+    public static function find()
+    {
         return new DiscountQuery(get_called_class());
     }
 
     /**
      * @return array validation rules for model attributes.
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['name', 'sum', 'start_date', 'end_date'], 'required'],
             ['switch', 'boolean'],
@@ -56,17 +62,57 @@ class Discount extends \panix\engine\db\ActiveRecord {
         ];
     }
 
+
+    /**
+     * @param array $data
+     */
+    public function setDiscountCategories(array $data)
+    {
+        $this->_discountCategories = $data;
+    }
+
     /**
      * @return array
      */
-    public function getDiscountCategories() {
+    public function getUserRoles()
+    {
+        return json_decode($this->roles);
+    }
 
+    /**
+     * @param array $roles
+     */
+    public function setUserRoles(array $roles)
+    {
+        $this->roles = json_encode($roles);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDiscountManufacturers()
+    {
+        if (is_array($this->_discountManufacturers))
+            return $this->_discountManufacturers;
+
+        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
+            ->bindValue(':id', $this->id)
+            ->queryColumn();
+
+        return $this->_discountManufacturers;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDiscountCategories()
+    {
         if (is_array($this->_discountCategories))
             return $this->_discountCategories;
 
         $this->_discountCategories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
-                ->bindValue(':id', $this->id)
-                ->queryColumn();
+            ->bindValue(':id', $this->id)
+            ->queryColumn();
 
         return $this->_discountCategories;
     }
@@ -74,53 +120,16 @@ class Discount extends \panix\engine\db\ActiveRecord {
     /**
      * @param array $data
      */
-    public function setDiscountCategories(array $data) {
-        $this->_discountCategories = $data;
-    }
-
-    /**
-     * @return array
-     */
-    public function getUserRoles() {
-        return json_decode($this->roles);
-    }
-
-    /**
-     * @param array $roles
-     */
-    public function setUserRoles(array $roles) {
-        $this->roles = json_encode($roles);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDiscountManufacturers() {
-        if (is_array($this->_discountManufacturers))
-            return $this->_discountManufacturers;
-
-
-
-        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
-                ->bindValue(':id', $this->id)
-                ->queryColumn();
-
-
-
-        return $this->_discountManufacturers;
-    }
-
-    /**
-     * @param array $data
-     */
-    public function setDiscountManufacturers(array $data) {
+    public function setDiscountManufacturers(array $data)
+    {
         $this->_discountManufacturers = $data;
     }
 
     /**
      * After save event
      */
-    public function afterSave($insert, $changedAttributes) {
+    public function afterSave($insert, $changedAttributes)
+    {
         $this->clearRelations();
 
         // Process manufacturers
@@ -147,7 +156,8 @@ class Discount extends \panix\engine\db\ActiveRecord {
         parent::afterSave($insert, $changedAttributes);
     }
 
-    public function afterDelete() {
+    public function afterDelete()
+    {
         //die('del');
         $this->clearRelations();
         parent::afterDelete();
@@ -156,13 +166,15 @@ class Discount extends \panix\engine\db\ActiveRecord {
     /**
      * Clear discount manufacturer and category
      */
-    public function clearRelations() {
+    public function clearRelations()
+    {
         Yii::$app->db->createCommand()
-                ->delete('{{%discount__manufacturer}}', 'discount_id=:id', [':id' => $this->id])
-                ->execute();
+            ->delete('{{%discount__manufacturer}}', 'discount_id=:id', [':id' => $this->id])
+            ->execute();
         Yii::$app->db->createCommand()
-                ->delete('{{%discount__category}}', 'discount_id=:id', [':id' => $this->id])
-                ->execute();
+            ->delete('{{%discount__category}}', 'discount_id=:id', [':id' => $this->id])
+            ->execute();
+
     }
 
 }
