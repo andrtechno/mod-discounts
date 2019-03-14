@@ -27,10 +27,12 @@ use panix\engine\bootstrap\ActiveForm;
                     'label' => $model::t('TAB_CATEGORIES'),
                     'content' => $this->render('_categories', ['form' => $form, 'model' => $model]),
                     'headerOptions' => [],
+
                     'options' => ['id' => 'categories'],
                 ],
             ],
         ]);
+       // echo $this->render('_categories', ['form' => $form, 'model' => $model]);
         ?>
         <div class="form-group text-center">
             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'CREATE') : Yii::t('app', 'UPDATE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

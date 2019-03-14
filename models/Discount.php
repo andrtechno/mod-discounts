@@ -148,13 +148,13 @@ class Discount extends \panix\engine\db\ActiveRecord {
     }
 
     public function afterDelete() {
-        die('del');
+        //die('del');
         $this->clearRelations();
         parent::afterDelete();
     }
 
     /**
-     * Clear discount manuacturer and category
+     * Clear discount manufacturer and category
      */
     public function clearRelations() {
         Yii::$app->db->createCommand()

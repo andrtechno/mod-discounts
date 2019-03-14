@@ -15,8 +15,6 @@ use panix\mod\shop\models\Category;
 
 <?php
 
-
-
 echo \panix\ext\jstree\JsTree::widget([
     'id' => 'DiscountCategoryTree',
     'name' => 'jstree',

@@ -45,20 +45,20 @@ class m170908_104527_discounts extends Migration
         ], $this->tableOptions);
 
 
-        $this->createIndex('switch', '{{%discount}}', 'switch', 0);
-        $this->createIndex('start_date', '{{%discount}}', 'start_date', 0);
-        $this->createIndex('end_date', '{{%discount}}', 'end_date', 0);
+        $this->createIndex('switch', Discount::tableName(), 'switch');
+        $this->createIndex('start_date', Discount::tableName(), 'start_date');
+        $this->createIndex('end_date', Discount::tableName(), 'end_date');
 
-        $this->createIndex('discount_id', '{{%discount__category}}', 'discount_id', 0);
-        $this->createIndex('category_id', '{{%discount__category}}', 'category_id', 0);
+        $this->createIndex('discount_id', '{{%discount__category}}', 'discount_id');
+        $this->createIndex('category_id', '{{%discount__category}}', 'category_id');
 
-        $this->createIndex('discount_id', '{{%discount__manufacturer}}', 'discount_id', 0);
-        $this->createIndex('manufacturer_id', '{{%discount__manufacturer}}', 'manufacturer_id', 0);
+        $this->createIndex('discount_id', '{{%discount__manufacturer}}', 'discount_id');
+        $this->createIndex('manufacturer_id', '{{%discount__manufacturer}}', 'manufacturer_id');
     }
 
     public function down()
     {
-        $this->dropTable('{{%discount}}');
+        $this->dropTable(Discount::tableName());
         $this->dropTable('{{%discount__category}}');
         $this->dropTable('{{%discount__manufacturer}}');
     }
