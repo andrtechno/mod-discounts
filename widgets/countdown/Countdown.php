@@ -29,11 +29,11 @@ class Countdown extends \panix\engine\data\Widget {
                 $.fn.countdown_day = function(number) {
                     var num = number % 10;
                     if (num == 1){
-                        return '" . CMS::GetFormatWord('app', 'DAYS', 0) . "';
+                        return '" . Yii::t('discounts/widgets/countdown/default', 'DAYS', ['n'=>0]) . "';
                     } else if (num > 1 && num < 5){
-                        return '" . CMS::GetFormatWord('app', 'DAYS', 1) . "';
+                        return '" . Yii::t('discounts/widgets/countdown/default', 'DAYS', ['n'=>1]) . "';
                     } else {
-                        return '" . CMS::GetFormatWord('app', 'DAYS', 2) . "';
+                        return '" . Yii::t('discounts/widgets/countdown/default', 'DAYS', ['n'=>2]) . "';
                     }
                 };
 
