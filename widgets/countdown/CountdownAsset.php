@@ -4,7 +4,8 @@ namespace panix\mod\discounts\widgets\countdown;
 
 use yii\web\AssetBundle;
 
-class CountdownAsset extends AssetBundle {
+class CountdownAsset extends AssetBundle
+{
 
     public $sourcePath = '@discounts/widgets/countdown/assets';
     public $jsOptions = array(
@@ -16,5 +17,7 @@ class CountdownAsset extends AssetBundle {
     public $js = [
         'js/jquery.countdown.js'
     ];
-
+    public $depends = [
+        'yii\web\JqueryAsset',
+    ];
 }

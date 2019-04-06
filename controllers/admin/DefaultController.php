@@ -86,9 +86,9 @@ class DefaultController extends AdminController {
             $model->save();
             Yii::$app->session->setFlash('success', \Yii::t('app', 'SUCCESS_CREATE'));
             if ($model->isNewRecord) {
-                return Yii::$app->getResponse()->redirect(['/discounts']);
+                return Yii::$app->getResponse()->redirect(['/admin/discounts']);
             } else {
-                return Yii::$app->getResponse()->redirect(['/discounts/default/update', 'id' => $model->id]);
+                return Yii::$app->getResponse()->redirect(['/admin/discounts/default/update', 'id' => $model->id]);
             }
         }
 

@@ -14,5 +14,7 @@ class DiscountAsset extends AssetBundle {
     public $js = [
         'default.update.js',
     ];
-
+    public $depends = [
+        'yii\web\JqueryAsset',
+    ];
 }

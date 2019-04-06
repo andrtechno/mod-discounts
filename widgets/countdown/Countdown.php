@@ -49,7 +49,7 @@ class Countdown extends \panix\engine\data\Widget {
                     }
                 });
             });
-         ", \yii\web\View::POS_HEAD, 'Countdown');
+         ", \yii\web\View::POS_END, 'Countdown');
         //$this->view->registerJsFile(Yii::$app->assetManager->publish('@discounts/widgets/countdown/assets').'/jquery.countdown.min.js');
         CountdownAsset::register($this->view);
     }
