@@ -16,7 +16,7 @@ class Module extends WebModule {
             'version' => '1.0',
             'icon' => $this->icon,
             'description' => Yii::t('discounts/default', 'MODULE_DESC'),
-            'url' => ['/discounts/default/index'],
+            'url' => ['/admin/discounts/default/index'],
         ];
     }
 
@@ -31,7 +31,7 @@ class Module extends WebModule {
                 'items' => [
                     [
                         'label' => Yii::t('discounts/default', 'MODULE_NAME'),
-                        'url' => ['/discounts/default/index'],
+                        'url' => ['/admin/discounts/default/index'],
                         'icon' => $this->icon,
                     ],
                 ],
