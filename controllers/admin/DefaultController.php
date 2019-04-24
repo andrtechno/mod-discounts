@@ -38,19 +38,9 @@ class DefaultController extends AdminController {
 
     /**
      * Update discount
-     * @param bool $new
-     * @throws CHttpException
      */
     public function actionUpdate($id = false) {
-        if ($id === true)
-            $model = new Discount;
-        else
-            $model = Discount::findOne($id);
-
-        if (!$model)
-            $this->error404(Yii::t('discounts/default', 'NO_FOUND_DISCOUNT'));
-
-
+        $model = Discount::findModel($id,Yii::t('discounts/default', 'NO_FOUND_DISCOUNT'));
 
 
         $this->pageName = ($model->isNewRecord) ? Yii::t('discounts/default', 'Создание скидки') :
