@@ -6,7 +6,7 @@ use panix\engine\bootstrap\ActiveForm;
 
 
 ?>
-<div class="card bg-light">
+<div class="card">
     <div class="card-header">
         <h5><?= Html::encode($this->context->pageName) ?></h5>
     </div>
@@ -38,7 +38,7 @@ use panix\engine\bootstrap\ActiveForm;
         // echo $this->render('_categories', ['form' => $form, 'model' => $model]);
         ?>
         <div class="form-group text-center">
-            <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'CREATE') : Yii::t('app', 'UPDATE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+            <?= $model->submitButton(); ?>
         </div>
         <?php ActiveForm::end(); ?>
     </div>
