@@ -36,9 +36,6 @@ class DefaultController extends AdminController {
         ]);
     }
 
-    /**
-     * Update discount
-     */
     public function actionUpdate($id = false) {
         $model = Discount::findModel($id,Yii::t('discounts/default', 'NO_FOUND_DISCOUNT'));
 

@@ -2,6 +2,7 @@
 
 use yii\widgets\Pjax;
 use panix\engine\grid\GridView;
+
 Pjax::begin([
     'id' => 'pjax-container',
     'enablePushState' => false,
@@ -20,6 +21,22 @@ echo GridView::widget([
             'attribute' => 'sum',
             'format' => 'html',
             'contentOptions' => ['class' => 'text-center'],
+        ],
+        [
+            //'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
+            'attribute' => 'start_date',
+            'contentOptions' => ['class' => 'text-center'],
+            'value' => function ($model) {
+                return \panix\engine\CMS::date($model->start_date);
+            }
+        ],
+        [
+            //'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
+            'attribute' => 'end_date',
+            'contentOptions' => ['class' => 'text-center'],
+            'value' => function ($model) {
+                return \panix\engine\CMS::date($model->end_date);
+            }
         ],
         [
             'class' => 'panix\engine\grid\columns\ActionColumn',

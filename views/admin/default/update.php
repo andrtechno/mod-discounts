@@ -2,6 +2,9 @@
 
 use yii\helpers\Html;
 use panix\engine\bootstrap\ActiveForm;
+
+
+
 ?>
 <div class="card bg-light">
     <div class="card-header">
@@ -10,10 +13,10 @@ use panix\engine\bootstrap\ActiveForm;
     <div class="card-body">
         <?php
         $form = ActiveForm::begin([
-                    'id' => basename(get_class($model)),
-                    'options' => [
-                        'class' => 'form-horizontal',
-                    ]
+            'id' => basename(get_class($model)),
+            'options' => [
+                'class' => 'form-horizontal',
+            ]
         ]);
         echo panix\engine\bootstrap\Tabs::widget([
             'items' => [
@@ -32,7 +35,7 @@ use panix\engine\bootstrap\ActiveForm;
                 ],
             ],
         ]);
-       // echo $this->render('_categories', ['form' => $form, 'model' => $model]);
+        // echo $this->render('_categories', ['form' => $form, 'model' => $model]);
         ?>
         <div class="form-group text-center">
             <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'CREATE') : Yii::t('app', 'UPDATE'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

@@ -4,6 +4,8 @@ namespace panix\mod\discounts\models;
 
 use Yii;
 use panix\engine\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 class Discount extends ActiveRecord
 {
@@ -71,6 +73,7 @@ class Discount extends ActiveRecord
             ['switch', 'boolean'],
             ['name', 'string', 'max' => 255],
             ['sum', 'string', 'max' => 10],
+            [['created_at', 'updated_at'], 'integer'],
             [['manufacturers', 'categories', 'userRoles'], 'each', 'rule' => ['integer']],
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
@@ -191,5 +194,14 @@ class Discount extends ActiveRecord
             ->execute();
 
     }
+    public function behaviors()
+    {
 
+            $b['timestamp'] = [
+                'class' => TimestampBehavior::class,
+            ];
+
+
+        return $b;
+    }
 }

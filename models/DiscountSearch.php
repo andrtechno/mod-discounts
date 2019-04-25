@@ -16,7 +16,8 @@ class DiscountSearch extends Discount {
     public function rules() {
         return [
             [['id'], 'integer'],
-            [['name', 'seo_alias', 'sku', 'price'], 'safe'],
+            [['name'], 'safe'],
+            //[['start_date', 'end_date'], 'date', 'format' => 'php:Y-m-d']
         ];
     }
 
@@ -54,7 +55,10 @@ class DiscountSearch extends Discount {
             'id' => $this->id,
         ]);
 
+        //$query->andFilterWhere(['like', "DATE(CONVERT_TZ('start_date', 'UTC', '".\Yii::$app->timezone."'))", strtotime($this->start_date).' 23:59:59']);
+
         $query->andFilterWhere(['like', 'name', $this->name]);
+       // $query->andFilterWhere(['like', 'start_date', strtotime($this->start_date)]);
 
 
         return $dataProvider;
