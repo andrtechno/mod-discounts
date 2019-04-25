@@ -23,7 +23,7 @@ echo GridView::widget([
             'contentOptions' => ['class' => 'text-center'],
         ],
         [
-            //'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
+            'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
             'attribute' => 'start_date',
             'contentOptions' => ['class' => 'text-center'],
             'value' => function ($model) {
@@ -31,7 +31,7 @@ echo GridView::widget([
             }
         ],
         [
-            //'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
+            'class' => 'panix\engine\grid\columns\jui\DatepickerColumn',
             'attribute' => 'end_date',
             'contentOptions' => ['class' => 'text-center'],
             'value' => function ($model) {

@@ -8,23 +8,26 @@ use panix\engine\data\ActiveDataProvider;
 use panix\mod\discounts\models\Discount;
 
 
-class DiscountSearch extends Discount {
+class DiscountSearch extends Discount
+{
 
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['id'], 'integer'],
             [['name'], 'safe'],
-            //[['start_date', 'end_date'], 'date', 'format' => 'php:Y-m-d']
+            [['start_date', 'end_date'], 'date', 'format' => 'php:Y-m-d']
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function scenarios() {
+    public function scenarios()
+    {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -36,7 +39,8 @@ class DiscountSearch extends Discount {
      *
      * @return ActiveDataProvider
      */
-    public function search($params) {
+    public function search($params)
+    {
         $query = Discount::find();
 
         $dataProvider = new ActiveDataProvider([
@@ -58,8 +62,12 @@ class DiscountSearch extends Discount {
         //$query->andFilterWhere(['like', "DATE(CONVERT_TZ('start_date', 'UTC', '".\Yii::$app->timezone."'))", strtotime($this->start_date).' 23:59:59']);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
-       // $query->andFilterWhere(['like', 'start_date', strtotime($this->start_date)]);
+        // $query->andFilterWhere(['like', 'start_date', strtotime($this->start_date)]);
 
+        foreach (['end_date', 'start_date', 'created_at', 'updated_at'] as $date) {
+            $query->andFilterWhere(['>=', $date, $this->{$date} ? strtotime($this->{$date} . ' 00:00:00') : null]);
+            $query->andFilterWhere(['<=', $date, $this->{$date} ? strtotime($this->{$date} . ' 23:59:59') : null]);
+        }
 
         return $dataProvider;
     }
