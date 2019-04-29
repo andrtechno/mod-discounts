@@ -53,7 +53,7 @@ class DefaultController extends AdminController {
             'url' => ['index']
         ];
         $this->breadcrumbs[] = $this->pageName;
-        \panix\mod\discounts\assets\DiscountAsset::register($this->view);
+        \panix\mod\discounts\DiscountAsset::register($this->view);
 
 
         $post = Yii::$app->request->post();
