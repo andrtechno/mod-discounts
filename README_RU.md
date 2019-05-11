@@ -12,7 +12,7 @@
 #### Либо запустите
 
 ```
-php composer.phar require --prefer-dist panix/mod-discounts "*"
+php composer require --prefer-dist panix/mod-discounts "*"
 ```
 
 или добавить
