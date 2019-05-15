@@ -3,12 +3,10 @@
 use yii\helpers\Html;
 use panix\engine\bootstrap\ActiveForm;
 
-
-?>
-<?php
 $form = ActiveForm::begin([
     'id' => basename(get_class($model))
 ]);
+
 ?>
 <div class="card">
     <div class="card-header">
