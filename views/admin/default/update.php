@@ -4,7 +4,11 @@ use yii\helpers\Html;
 use panix\engine\bootstrap\ActiveForm;
 
 
-
+?>
+<?php
+$form = ActiveForm::begin([
+    'id' => basename(get_class($model))
+]);
 ?>
 <div class="card">
     <div class="card-header">
@@ -12,12 +16,7 @@ use panix\engine\bootstrap\ActiveForm;
     </div>
     <div class="card-body">
         <?php
-        $form = ActiveForm::begin([
-            'id' => basename(get_class($model)),
-            'options' => [
-                'class' => 'form-horizontal',
-            ]
-        ]);
+
         echo panix\engine\bootstrap\Tabs::widget([
             'items' => [
                 [
@@ -37,10 +36,10 @@ use panix\engine\bootstrap\ActiveForm;
         ]);
         // echo $this->render('_categories', ['form' => $form, 'model' => $model]);
         ?>
-        <div class="form-group text-center">
-            <?= $model->submitButton(); ?>
-        </div>
-        <?php ActiveForm::end(); ?>
+
+    </div>
+    <div class="card-footer text-center">
+        <?= $model->submitButton(); ?>
     </div>
 </div>
-
+<?php ActiveForm::end(); ?>

@@ -17,6 +17,9 @@ use panix\mod\discounts\models\Discount;
 class m170908_104527_discounts extends Migration
 {
 
+    public static $categoryTable = '{{%discount__category}}';
+    public static $manufacturerTable = '{{%discount__manufacturer}}';
+
     public function up()
     {
 
@@ -33,14 +36,14 @@ class m170908_104527_discounts extends Migration
         ], $this->tableOptions);
 
 
-        $this->createTable('{{%discount__category}}', [
+        $this->createTable(self::$categoryTable, [
             'id' => $this->primaryKey(),
             'discount_id' => $this->integer(),
             'category_id' => $this->integer(),
         ], $this->tableOptions);
 
 
-        $this->createTable('{{%discount__manufacturer}}', [
+        $this->createTable(self::$manufacturerTable, [
             'id' => $this->primaryKey(),
             'discount_id' => $this->integer(),
             'manufacturer_id' => $this->integer(),
@@ -51,18 +54,18 @@ class m170908_104527_discounts extends Migration
         $this->createIndex('start_date', Discount::tableName(), 'start_date');
         $this->createIndex('end_date', Discount::tableName(), 'end_date');
 
-        $this->createIndex('discount_id', '{{%discount__category}}', 'discount_id');
-        $this->createIndex('category_id', '{{%discount__category}}', 'category_id');
+        $this->createIndex('discount_id', self::$categoryTable, 'discount_id');
+        $this->createIndex('category_id', self::$categoryTable, 'category_id');
 
-        $this->createIndex('discount_id', '{{%discount__manufacturer}}', 'discount_id');
-        $this->createIndex('manufacturer_id', '{{%discount__manufacturer}}', 'manufacturer_id');
+        $this->createIndex('discount_id', self::$manufacturerTable, 'discount_id');
+        $this->createIndex('manufacturer_id', self::$manufacturerTable, 'manufacturer_id');
     }
 
     public function down()
     {
         $this->dropTable(Discount::tableName());
-        $this->dropTable('{{%discount__category}}');
-        $this->dropTable('{{%discount__manufacturer}}');
+        $this->dropTable(self::$categoryTable);
+        $this->dropTable(self::$manufacturerTable);
     }
 
 }
