@@ -2,16 +2,37 @@
 
 namespace panix\mod\discounts;
 
-
+use panix\mod\discounts\models\Discount;
 use Yii;
+use yii\base\BootstrapInterface;
 use panix\engine\WebModule;
 use panix\mod\admin\widgets\sidebar\BackendNav;
 
-class Module extends WebModule {
+class Module extends WebModule implements BootstrapInterface
+{
 
     public $icon = 'discount';
 
-    public function getInfo() {
+    /**
+     * @var null
+     */
+    public $discounts = null;
+    /**
+     * @inheritdoc
+     */
+    public function bootstrap($app)
+    {
+        if ($this->discounts === null) {
+
+            $this->discounts = Discount::find()
+                ->published()
+                ->applyDate()
+                ->all();
+        }
+    }
+
+    public function getInfo()
+    {
         return [
             'label' => Yii::t('discounts/default', 'MODULE_NAME'),
             'author' => 'andrew.panix@gmail.com',
@@ -27,7 +48,8 @@ class Module extends WebModule {
         return (new BackendNav())->findMenu('shop')['items'];
     }
 
-    public function getAdminMenu() {
+    public function getAdminMenu()
+    {
         return [
             'shop' => [
                 'items' => [

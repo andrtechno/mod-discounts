@@ -37,16 +37,6 @@ class DiscountBehavior extends Behavior
     }
 
     /**
-     * Attach behavior to model
-     * @param $owner
-     */
-    public function attach($owner)
-    {
-        $this->owner = $owner;
-        parent::attach($owner);
-    }
-
-    /**
      * After find event
      */
     public function afterFind()
@@ -55,10 +45,11 @@ class DiscountBehavior extends Behavior
         if (!$this->owner->isNewRecord) {
             if ($this->discounts === null) {
 
-                $this->discounts = Discount::find()
+                /*$this->discounts = Discount::find()
                     ->published()
                     ->applyDate()
-                    ->all();
+                    ->all();*/
+                $this->discounts=Yii::$app->getModule('discounts')->discounts;
             }
         }
 
