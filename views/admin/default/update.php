@@ -14,7 +14,6 @@ $form = ActiveForm::begin([
     </div>
     <div class="card-body">
         <?php
-
         echo panix\engine\bootstrap\Tabs::widget([
             'items' => [
                 [
@@ -27,14 +26,11 @@ $form = ActiveForm::begin([
                     'label' => $model::t('TAB_CATEGORIES'),
                     'content' => $this->render('_categories', ['form' => $form, 'model' => $model]),
                     'headerOptions' => [],
-
                     'options' => ['id' => 'categories'],
                 ],
             ],
         ]);
-        // echo $this->render('_categories', ['form' => $form, 'model' => $model]);
         ?>
-
     </div>
     <div class="card-footer text-center">
         <?= $model->submitButton(); ?>

@@ -4,8 +4,9 @@ namespace panix\mod\discounts\widgets\countdown;
 
 use Yii;
 use panix\engine\CMS;
+use panix\engine\data\Widget;
 
-class Countdown extends \panix\engine\data\Widget {
+class Countdown extends Widget {
 
     public $model;
 
@@ -14,7 +15,6 @@ class Countdown extends \panix\engine\data\Widget {
       
             if ($this->model->appliedDiscount && $this->model->discountEndDate) {
                 $this->registerScript();
-                      $this->registerTranslations();
                 return $this->render($this->skin);
             }
         }
@@ -29,11 +29,11 @@ class Countdown extends \panix\engine\data\Widget {
                 $.fn.countdown_day = function(number) {
                     var num = number % 10;
                     if (num == 1){
-                        return '" . Yii::t('discounts/widgets/countdown/default', 'DAYS', ['n'=>0]) . "';
+                        return '" . Yii::t('wgt_Countdown/default', 'DAYS', ['n'=>0]) . "';
                     } else if (num > 1 && num < 5){
-                        return '" . Yii::t('discounts/widgets/countdown/default', 'DAYS', ['n'=>1]) . "';
+                        return '" . Yii::t('wgt_Countdown/default', 'DAYS', ['n'=>1]) . "';
                     } else {
-                        return '" . Yii::t('discounts/widgets/countdown/default', 'DAYS', ['n'=>2]) . "';
+                        return '" . Yii::t('wgt_Countdown/default', 'DAYS', ['n'=>2]) . "';
                     }
                 };
 
@@ -53,15 +53,5 @@ class Countdown extends \panix\engine\data\Widget {
         //$this->view->registerJsFile(Yii::$app->assetManager->publish('@discounts/widgets/countdown/assets').'/jquery.countdown.min.js');
         CountdownAsset::register($this->view);
     }
-    public function registerTranslations($id='widgets/countdown') {
-        $lang = Yii::$app->language;
-        Yii::$app->i18n->translations['discounts/widgets/countdown/*'] = [
-            'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@discounts/widgets/countdown/messages',
-            'fileMap' => [
-              'default' => 'default.php',
-            ]
-        ];
-       // print_r(Yii::$app->i18n->translations);die;
-    }
+
 }

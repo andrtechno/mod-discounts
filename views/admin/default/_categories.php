@@ -9,17 +9,19 @@ use panix\mod\shop\models\Category;
         'options' => [
             'class' => 'alert-info',
         ],
-        'closeButton' => false,
         'body' => Yii::t('discounts/default', "CATEGORY_INFO"),
     ]);
     ?>
 </div>
 
 <div class="form-group row">
-    <div class="col-sm-4"><label class="control-label"
-                                 for="search-discount-category"><?php echo Yii::t('app', 'Поиск:') ?></label></div>
-    <div class="col-sm-8"><input class="form-control" id="search-discount-category" type="text"
-                                 onkeyup='$("#jsTree_DiscountCategoryTree").jstree("search", $(this).val());'/>
+    <div class="col-sm-4">
+        <label class="control-label"
+               for="search-discount-category"><?= Yii::t('app', 'Поиск:') ?></label>
+    </div>
+    <div class="col-sm-8">
+        <input class="form-control" id="search-discount-category" type="text"
+               onkeyup='$("#jsTree_DiscountCategoryTree").jstree("search", $(this).val());'/>
     </div>
 </div>
 
