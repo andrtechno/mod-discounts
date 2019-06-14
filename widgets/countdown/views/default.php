@@ -19,7 +19,7 @@
                 <span class="value"><?=Yii::t('wgt_Countdown/default', 'MIN')?></span>
             </div>
         </div>
-        <div class="box-wrapper d-md-none">
+        <div class="box-wrapper d-none d-sm-block">
             <div class="seconds box">
                 <span class="key">0</span>
                 <span class="value"><?=Yii::t('wgt_Countdown/default', 'SEC')?></span>
