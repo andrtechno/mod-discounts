@@ -21,7 +21,7 @@ class DefaultController extends AdminController {
 
         $this->buttons = [
             [
-                'icon' => 'icon-add',
+                'icon' => 'add',
                 'label' => Yii::t('discounts/default', 'CREATE_DISCOUNT'),
                 'url' => ['create'],
                 'options' => ['class' => 'btn btn-success']
