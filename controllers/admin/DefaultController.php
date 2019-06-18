@@ -7,9 +7,24 @@ use panix\engine\controllers\AdminController;
 use panix\mod\discounts\models\Discount;
 use panix\mod\discounts\models\DiscountSearch;
 
-class DefaultController extends AdminController {
+class DefaultController extends AdminController
+{
+    public function actions()
+    {
+        return [
+            'switch' => [
+                'class' => \panix\engine\actions\SwitchAction::class,
+                'modelClass' => Discount::class,
+            ],
+            'delete' => [
+                'class' => \panix\engine\actions\DeleteAction::class,
+                'modelClass' => Discount::class,
+            ],
+        ];
+    }
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $this->pageName = Yii::t('discounts/default', 'MODULE_NAME');
 
 
@@ -31,17 +46,18 @@ class DefaultController extends AdminController {
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
-    public function actionUpdate($id = false) {
-        $model = Discount::findModel($id,Yii::t('discounts/default', 'NO_FOUND_DISCOUNT'));
+    public function actionUpdate($id = false)
+    {
+        $model = Discount::findModel($id, Yii::t('discounts/default', 'NO_FOUND_DISCOUNT'));
 
 
         $this->pageName = ($model->isNewRecord) ? Yii::t('discounts/default', 'Создание скидки') :
-                Yii::t('discounts/default', 'Редактирование скидки');
+            Yii::t('discounts/default', 'Редактирование скидки');
 
 
         $this->breadcrumbs[] = [
@@ -58,24 +74,34 @@ class DefaultController extends AdminController {
 
         $post = Yii::$app->request->post();
 
+print_r($post['Discount']['manufacturers']);die;
+        if ($model->load($post)) {
 
-
-
-        if ($model->load($post) && $model->validate()) {
 
             if (!isset($post['Discount']['manufacturers']))
-                $model->discountManufacturers = [];
+                $model->manufacturers = [];
             if (!isset($post['Discount']['categories']))
-                $model->discountCategories = [];
+                $model->categories = [];
             if (!isset($post['Discount']['userRoles']))
                 $model->userRoles = [];
 
-            $model->save();
-            Yii::$app->session->setFlash('success', \Yii::t('app', 'SUCCESS_CREATE'));
-            if ($model->isNewRecord) {
-                return Yii::$app->getResponse()->redirect(['/admin/discounts']);
-            } else {
-                return Yii::$app->getResponse()->redirect(['/admin/discounts/default/update', 'id' => $model->id]);
+            if ($model->validate()) {
+
+
+                $model->save();
+
+
+                if ($model->isNewRecord) {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_CREATE'));
+                    if (!Yii::$app->request->isAjax)
+                        return Yii::$app->getResponse()->redirect(['/admin/discounts']);
+                } else {
+                    Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_UPDATE'));
+                    $redirect = (isset($post['redirect'])) ? $post['redirect'] : Yii::$app->request->url;
+                    if (!Yii::$app->request->isAjax)
+                        return Yii::$app->getResponse()->redirect($redirect);
+                }
+
             }
         }
 

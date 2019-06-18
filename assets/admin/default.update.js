@@ -2,7 +2,7 @@
 
 // Process checked categories
 $("#Discount").submit(function(){
-    var checked = $("#jsTree_DiscountCategoryTree li a.jstree-checked");
+    var checked = $("#jsTree_CategoryTree li a.jstree-checked");
     checked.each(function(i, el){
         var id = $(el).attr("id").replace('node_', '').replace('_anchor', '');
 

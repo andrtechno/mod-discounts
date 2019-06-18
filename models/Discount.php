@@ -12,20 +12,19 @@ class Discount extends ActiveRecord
 
     const MODULE_ID = 'discounts';
 
+
+    //protected $_manufacturers;
+    //public $categories;
+    //public $manufacturers;
     /**
      * @var array ids of categories to apply discount
      */
-    //protected $_categories;
+    protected $_categories;
 
     /**
      * @var array ids of manufacturers to apply discount
      */
-    //protected $_manufacturers;
-    public $categories = [];
-    public $useRules = [];
-    public $manufacturers = [];
-    protected $_discountCategories;
-    protected $_discountManufacturers;
+    protected $_manufacturers;
 
     public function attributeLabels()
     {
@@ -36,7 +35,7 @@ class Discount extends ActiveRecord
     }
 
     /**
-     * @return string the associated database table name
+     * @inheritdoc
      */
     public static function tableName()
     {
@@ -74,7 +73,9 @@ class Discount extends ActiveRecord
             ['name', 'string', 'max' => 255],
             ['sum', 'string', 'max' => 10],
             [['created_at', 'updated_at'], 'integer'],
-            [['manufacturers', 'categories', 'userRoles'], 'each', 'rule' => ['integer']],
+            //[['manufacturers', 'categories', 'userRoles'], 'each', 'rule' => ['integer']],
+            [['manufacturers', 'categories'], 'each', 'rule' => ['integer']],
+
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
         ];
@@ -84,9 +85,9 @@ class Discount extends ActiveRecord
     /**
      * @param array $data
      */
-    public function setDiscountCategories(array $data)
+    public function setCategories(array $data)
     {
-        $this->_discountCategories = $data;
+        $this->_categories = $data;
     }
 
     /**
@@ -108,39 +109,39 @@ class Discount extends ActiveRecord
     /**
      * @return array
      */
-    public function getDiscountManufacturers()
+    public function getManufacturers()
     {
-        if (is_array($this->_discountManufacturers))
-            return $this->_discountManufacturers;
+        if (is_array($this->_manufacturers))
+            return $this->_manufacturers;
 
-        $this->_discountManufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
+        $this->_manufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
-        return $this->_discountManufacturers;
+        return $this->_manufacturers;
     }
 
     /**
      * @return array
      */
-    public function getDiscountCategories()
+    public function getCategories()
     {
-        if (is_array($this->_discountCategories))
-            return $this->_discountCategories;
+        if (is_array($this->_categories))
+            return $this->_categories;
 
-        $this->_discountCategories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
+        $this->_categories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
-        return $this->_discountCategories;
+        return $this->_categories;
     }
 
     /**
      * @param array $data
      */
-    public function setDiscountManufacturers(array $data)
+    public function setManufacturers(array $data)
     {
-        $this->_discountManufacturers = $data;
+        $this->_manufacturers = $data;
     }
 
     /**
@@ -176,7 +177,6 @@ class Discount extends ActiveRecord
 
     public function afterDelete()
     {
-        //die('del');
         $this->clearRelations();
         parent::afterDelete();
     }
@@ -194,14 +194,5 @@ class Discount extends ActiveRecord
             ->execute();
 
     }
-    public function behaviors()
-    {
 
-            $b['timestamp'] = [
-                'class' => TimestampBehavior::class,
-            ];
-
-
-        return $b;
-    }
 }

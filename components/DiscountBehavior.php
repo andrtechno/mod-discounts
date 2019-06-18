@@ -49,7 +49,7 @@ class DiscountBehavior extends Behavior
                     ->published()
                     ->applyDate()
                     ->all();*/
-                $this->discounts=Yii::$app->getModule('discounts')->discounts;
+                $this->discounts = Yii::$app->getModule('discounts')->discounts;
             }
         }
 
@@ -76,13 +76,18 @@ class DiscountBehavior extends Behavior
                 $apply = false;
 
                 // Validate category
-                if ($this->searchArray($discount->discountCategories, array_values($this->ownerCategories))) {
+                if ($this->searchArray($discount->categories, array_values($this->ownerCategories))) {
                     $apply = true;
-                }
+                    // Validate manufacturer
 
-                // Validate manufacturer
-                if (!empty($discount->discountManufacturers)) {
-                    $apply = in_array($this->owner->manufacturer_id, $discount->discountManufacturers);
+
+                    if (!empty($discount->manufacturers)) {
+                        $apply = in_array($this->owner->manufacturer_id, $discount->manufacturers);
+                    }
+
+                    if (Yii::$app->user->can('Admin') !== true) {
+                        //$apply = false;
+                    }
                 }
 
 
@@ -159,15 +164,15 @@ class DiscountBehavior extends Behavior
      */
     public function getOwnerCategories()
     {
-       // $id = 'discount_product_categories' . $this->owner->date_update;
+        // $id = 'discount_product_categories' . $this->owner->date_update;
         //$data = Yii::$app->cache->get($id);
 
 
         //if ($data === false) {
-            $data = \yii\helpers\ArrayHelper::map($this->owner->categories, 'id', 'id');
-            //$data = $this->owner->categories;
-            //Yii::$app->cache->set($id, $data);
-       // }
+        $data = \yii\helpers\ArrayHelper::map($this->owner->categories, 'id', 'id');
+        //$data = $this->owner->categories;
+        //Yii::$app->cache->set($id, $data);
+        // }
 
         return $data;
     }

@@ -29,7 +29,7 @@ use panix\mod\shop\models\Category;
 <?php
 
 echo \panix\ext\jstree\JsTree::widget([
-    'id' => 'DiscountCategoryTree',
+    'id' => 'CategoryTree',
     'name' => 'jstree',
     'allOpen' => true,
     'data' => CategoryNode::fromArray(Category::findOne(1)->children()->all()),
@@ -55,9 +55,9 @@ echo \panix\ext\jstree\JsTree::widget([
     ],
 ]);
 
-foreach ($model->getDiscountCategories() as $id) {
+foreach ($model->getCategories() as $id) {
 
-    $this->registerJs("$('#jsTree_DiscountCategoryTree').checkNode({$id});", yii\web\View::POS_END, "checkNode{$id}");
+    $this->registerJs("$('#jsTree_CategoryTree').checkNode({$id});", yii\web\View::POS_END, "checkNode{$id}");
 }
 
 // Create jstree
