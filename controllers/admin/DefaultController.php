@@ -74,23 +74,19 @@ class DefaultController extends AdminController
 
         $post = Yii::$app->request->post();
 
-print_r($post['Discount']['manufacturers']);die;
+
+        //if (!isset($post['Discount']['discountManufacturers']))
+       //     $model->discountManufacturers = [];
+        //if (!isset($post['Discount']['discountCategories']))
+        //    $model->discountCategories = [];
+        //if (!isset($post['Discount']['userRoles']))
+        //    $model->userRoles = [];
         if ($model->load($post)) {
 
 
-            if (!isset($post['Discount']['manufacturers']))
-                $model->manufacturers = [];
-            if (!isset($post['Discount']['categories']))
-                $model->categories = [];
-            if (!isset($post['Discount']['userRoles']))
-                $model->userRoles = [];
 
             if ($model->validate()) {
-
-
                 $model->save();
-
-
                 if ($model->isNewRecord) {
                     Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_CREATE'));
                     if (!Yii::$app->request->isAjax)
@@ -101,7 +97,6 @@ print_r($post['Discount']['manufacturers']);die;
                     if (!Yii::$app->request->isAjax)
                         return Yii::$app->getResponse()->redirect($redirect);
                 }
-
             }
         }
 

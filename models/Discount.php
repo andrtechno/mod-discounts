@@ -7,15 +7,19 @@ use panix\engine\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 
+/**
+ * Class Discount
+ * @package panix\mod\discounts\models
+ *
+ * @property array $discountManufacturers
+ * @property integer $start_date
+ */
 class Discount extends ActiveRecord
 {
 
     const MODULE_ID = 'discounts';
 
 
-    //protected $_manufacturers;
-    //public $categories;
-    //public $manufacturers;
     /**
      * @var array ids of categories to apply discount
      */
@@ -25,6 +29,13 @@ class Discount extends ActiveRecord
      * @var array ids of manufacturers to apply discount
      */
     protected $_manufacturers;
+
+
+
+    //public $useRules;
+
+
+
 
     public function attributeLabels()
     {
@@ -48,22 +59,8 @@ class Discount extends ActiveRecord
     }
 
 
-    public function beforeSave($insert)
-    {
-        $this->start_date = strtotime($this->start_date);
-        $this->end_date = strtotime($this->end_date);
-        return parent::beforeSave($insert);
-    }
-
-    public function afterFind()
-    {
-        $this->start_date = date('Y-m-d H:i:s', $this->start_date);
-        $this->end_date = date('Y-m-d H:i:s', $this->end_date);
-        parent::afterFind();
-    }
-
     /**
-     * @return array validation rules for model attributes.
+     * @inheritdoc
      */
     public function rules()
     {
@@ -73,21 +70,19 @@ class Discount extends ActiveRecord
             ['name', 'string', 'max' => 255],
             ['sum', 'string', 'max' => 10],
             [['created_at', 'updated_at'], 'integer'],
-            //[['manufacturers', 'categories', 'userRoles'], 'each', 'rule' => ['integer']],
-            [['manufacturers', 'categories'], 'each', 'rule' => ['integer']],
+            //[['discountManufacturers', 'discountCategories', 'userRoles'], 'each', 'rule' => ['integer']],
+            [['manufacturers','categories'], 'validateArray'],
 
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
         ];
     }
 
-
-    /**
-     * @param array $data
-     */
-    public function setCategories(array $data)
+    public function validateArray($attribute)
     {
-        $this->_categories = $data;
+        if (!is_array($this->{$attribute})) {
+            $this->addError($attribute, 'The attribute must be array.');
+        }
     }
 
     /**
@@ -106,19 +101,13 @@ class Discount extends ActiveRecord
         $this->roles = json_encode($roles);
     }
 
+
     /**
-     * @return array
+     * @param array $data
      */
-    public function getManufacturers()
+    public function setCategories(array $data)
     {
-        if (is_array($this->_manufacturers))
-            return $this->_manufacturers;
-
-        $this->_manufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
-            ->bindValue(':id', $this->id)
-            ->queryColumn();
-
-        return $this->_manufacturers;
+        $this->_categories = $data;
     }
 
     /**
@@ -141,44 +130,25 @@ class Discount extends ActiveRecord
      */
     public function setManufacturers(array $data)
     {
+
         $this->_manufacturers = $data;
     }
 
+
     /**
-     * After save event
+     * @return array
      */
-    public function afterSave($insert, $changedAttributes)
+    public function getManufacturers()
     {
-        $this->clearRelations();
+        if (is_array($this->_manufacturers))
+            return $this->_manufacturers;
 
-        // Process manufacturers
-        if (!empty($this->manufacturers)) {
-            foreach ($this->manufacturers as $id) {
-                Yii::$app->db->createCommand()->insert('{{%discount__manufacturer}}', [
-                    'discount_id' => $this->id,
-                    'manufacturer_id' => $id,
-                ])->execute();
-            }
-        }
+        $this->_manufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
+            ->bindValue(':id', $this->id)
+            ->queryColumn();
 
-        // Process categories
-        if (!empty($this->categories)) {
-            foreach (array_unique($this->categories) as $id) {
 
-                Yii::$app->db->createCommand()->insert('{{%discount__category}}', [
-                    'discount_id' => $this->id,
-                    'category_id' => $id,
-                ])->execute();
-            }
-        }
-
-        parent::afterSave($insert, $changedAttributes);
-    }
-
-    public function afterDelete()
-    {
-        $this->clearRelations();
-        parent::afterDelete();
+        return $this->_manufacturers;
     }
 
     /**
@@ -195,4 +165,55 @@ class Discount extends ActiveRecord
 
     }
 
+
+    public function beforeSave($insert)
+    {
+        $this->start_date = strtotime($this->start_date);
+        $this->end_date = strtotime($this->end_date);
+        return parent::beforeSave($insert);
+    }
+
+    public function afterFind()
+    {
+        $this->start_date = date('Y-m-d H:i:s', $this->start_date);
+        $this->end_date = date('Y-m-d H:i:s', $this->end_date);
+        parent::afterFind();
+    }
+
+    public function afterDelete()
+    {
+        $this->clearRelations();
+        parent::afterDelete();
+    }
+
+    /**
+     * After save event
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        $this->clearRelations();
+
+        // Process manufacturers
+        if (!empty($this->_manufacturers)) {
+            foreach ($this->_manufacturers as $id) {
+                Yii::$app->db->createCommand()->insert('{{%discount__manufacturer}}', [
+                    'discount_id' => $this->id,
+                    'manufacturer_id' => $id,
+                ])->execute();
+            }
+        }
+
+        // Process categories
+        if (!empty($this->_categories)) {
+            foreach (array_unique($this->_categories) as $id) {
+
+                Yii::$app->db->createCommand()->insert('{{%discount__category}}', [
+                    'discount_id' => $this->id,
+                    'category_id' => $id,
+                ])->execute();
+            }
+        }
+
+        parent::afterSave($insert, $changedAttributes);
+    }
 }

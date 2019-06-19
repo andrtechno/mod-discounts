@@ -21,7 +21,7 @@ use panix\mod\shop\models\Category;
     </div>
     <div class="col-sm-8">
         <input class="form-control" id="search-discount-category" type="text"
-               onkeyup='$("#jsTree_DiscountCategoryTree").jstree("search", $(this).val());'/>
+               onkeyup='$("#jsTree_CategoryTree").jstree("search", $(this).val());'/>
     </div>
 </div>
 

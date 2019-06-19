@@ -3,6 +3,11 @@ use yii\helpers\ArrayHelper;
 use panix\mod\shop\models\Manufacturer;
 use panix\engine\jui\DatetimePicker;
 
+/**
+ * @var \panix\mod\discounts\models\Discount $model
+ * @var \panix\engine\bootstrap\ActiveForm $form
+ */
+
 ?>
 <?= $form->field($model, 'name')->textInput(['maxlength' => 255]) ?>
 <?= $form->field($model, 'sum')->textInput(['maxlength' => 10]) ?>
