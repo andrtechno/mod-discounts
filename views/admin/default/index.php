@@ -1,6 +1,6 @@
 <?php
 
-use yii\widgets\Pjax;
+use panix\engine\widgets\Pjax;
 use panix\engine\grid\GridView;
 
 Pjax::begin([
@@ -44,6 +44,4 @@ echo GridView::widget([
     ]
 ]);
 Pjax::end();
-
-
 

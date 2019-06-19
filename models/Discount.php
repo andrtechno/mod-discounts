@@ -11,14 +11,14 @@ use yii\db\Expression;
  * Class Discount
  * @package panix\mod\discounts\models
  *
- * @property array $discountManufacturers
+ * @property array $categories Category ids
+ * @property array $manufacturers Manufacturer ids
  * @property integer $start_date
  */
 class Discount extends ActiveRecord
 {
 
     const MODULE_ID = 'discounts';
-
 
     /**
      * @var array ids of categories to apply discount
@@ -29,7 +29,6 @@ class Discount extends ActiveRecord
      * @var array ids of manufacturers to apply discount
      */
     protected $_manufacturers;
-
 
 
     //public $useRules;
@@ -72,6 +71,9 @@ class Discount extends ActiveRecord
             [['created_at', 'updated_at'], 'integer'],
             //[['discountManufacturers', 'discountCategories', 'userRoles'], 'each', 'rule' => ['integer']],
             [['manufacturers','categories'], 'validateArray'],
+            //[['manufacturers', 'categories'], 'default', 'value' => []],
+
+
 
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
@@ -105,7 +107,7 @@ class Discount extends ActiveRecord
     /**
      * @param array $data
      */
-    public function setCategories(array $data)
+    public function setCategories($data)
     {
         $this->_categories = $data;
     }
@@ -128,7 +130,7 @@ class Discount extends ActiveRecord
     /**
      * @param array $data
      */
-    public function setManufacturers(array $data)
+    public function setManufacturers($data)
     {
 
         $this->_manufacturers = $data;

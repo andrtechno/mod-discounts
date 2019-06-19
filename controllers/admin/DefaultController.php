@@ -74,23 +74,27 @@ class DefaultController extends AdminController
 
         $post = Yii::$app->request->post();
 
+        if (!isset($post['Discount']['manufacturers'])) {
+            $model->manufacturers = [];
+        }
+        if (!isset($post['Discount']['categories']))
+            $model->categories = [];
 
-        //if (!isset($post['Discount']['discountManufacturers']))
-       //     $model->discountManufacturers = [];
-        //if (!isset($post['Discount']['discountCategories']))
-        //    $model->discountCategories = [];
-        //if (!isset($post['Discount']['userRoles']))
-        //    $model->userRoles = [];
+
+
+        $isNew = $model->isNewRecord;
         if ($model->load($post)) {
 
+            //if (!isset($post['Discount']['userRoles']))
+            //    $model->userRoles = [];
 
 
             if ($model->validate()) {
                 $model->save();
-                if ($model->isNewRecord) {
+                if ($isNew) {
                     Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_CREATE'));
                     if (!Yii::$app->request->isAjax)
-                        return Yii::$app->getResponse()->redirect(['/admin/discounts']);
+                        return Yii::$app->getResponse()->redirect('index');
                 } else {
                     Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_UPDATE'));
                     $redirect = (isset($post['redirect'])) ? $post['redirect'] : Yii::$app->request->url;
