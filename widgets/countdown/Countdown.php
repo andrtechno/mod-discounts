@@ -3,7 +3,6 @@
 namespace panix\mod\discounts\widgets\countdown;
 
 use Yii;
-use panix\engine\CMS;
 use panix\engine\data\Widget;
 
 class Countdown extends Widget {
