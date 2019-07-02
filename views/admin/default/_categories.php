@@ -1,26 +1,22 @@
 <?php
 use panix\mod\shop\models\Category;
+use panix\engine\Html;
 
 ?>
 <div class="form-group row2">
-    <?php
-    echo \panix\engine\bootstrap\Alert::widget([
-        'options' => [
-            'class' => 'alert-info',
-        ],
-        'body' => Yii::t('discounts/default', "CATEGORY_INFO"),
-    ]);
-    ?>
+    <div class="alert alert-info"><?= Yii::t('discounts/default', "CATEGORY_INFO"); ?></div>
 </div>
 
 <div class="form-group row">
     <div class="col-sm-4">
-        <label class="control-label"
-               for="search-discount-category"><?= Yii::t('app', 'Поиск:') ?></label>
+        <?= Html::label(Yii::t('app', 'Поиск:'),'search-discount-category',['class'=>'control-label']);?>
     </div>
     <div class="col-sm-8">
-        <input class="form-control" id="search-discount-category" type="text"
-               onkeyup='$("#jsTree_CategoryTree").jstree("search", $(this).val());'/>
+        <?= Html::textInput('search', null, [
+            'id' => 'search-discount-category',
+            'class' => 'form-control',
+            'onClick' => '$("#jsTree_CategoryTree").jstree("search", $(this).val());'
+        ]); ?>
     </div>
 </div>
 
@@ -31,7 +27,7 @@ echo \panix\ext\jstree\JsTree::widget([
     'id' => 'CategoryTree',
     'name' => 'jstree',
     'allOpen' => true,
-    'data' => Category::find()->dataFancytree(2),
+    'data' => Category::find()->dataFancytree(1),
     'core' => [
         'strings' => [
             'Loading ...' => Yii::t('app', 'LOADING')
@@ -59,26 +55,3 @@ foreach ($model->getCategories() as $id) {
     $this->registerJs("$('#jsTree_CategoryTree').checkNode({$id});", yii\web\View::POS_END, "checkNode{$id}");
 }
 
-// Create jstree
-/*$this->widget('ext.jstree.JsTree', array(
-    'id' => 'ShopDiscountCategoryTree',
-    'data' => ShopCategoryNode::fromArray(ShopCategory::model()->findAllByPk(1)),
-    'options' => array(
-        'core' => array(
-            'check_callback' => true,
-            "themes" => array("stripes" => true, 'responsive' => true),
-        ),
-        'plugins' => array('search', 'checkbox'),
-        'checkbox' => array(
-            'three_state'=>false,
-            "keep_selected_style" => false,
-            'tie_selection' => false,
-        ),
-    ),
-));
-
-// Check tree nodes
-foreach ($model->categories as $id) {
-    Yii::app()->getClientScript()->registerScript("checkNode{$id}", "$('#ShopDiscountCategoryTree').checkNode({$id});");
-}*/
-?>
