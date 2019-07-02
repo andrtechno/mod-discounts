@@ -91,16 +91,10 @@ class DefaultController extends AdminController
 
             if ($model->validate()) {
                 $model->save();
-                if ($isNew) {
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_CREATE'));
-                    if (!Yii::$app->request->isAjax)
-                        return Yii::$app->getResponse()->redirect('index');
-                } else {
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'SUCCESS_UPDATE'));
-                    $redirect = (isset($post['redirect'])) ? $post['redirect'] : Yii::$app->request->url;
-                    if (!Yii::$app->request->isAjax)
-                        return Yii::$app->getResponse()->redirect($redirect);
-                }
+                Yii::$app->session->setFlash('success', Yii::t('app', ($isNew) ? 'SUCCESS_CREATE' : 'SUCCESS_UPDATE'));
+                $redirect = (isset($post['redirect'])) ? $post['redirect'] : Yii::$app->request->url;
+                if (!Yii::$app->request->isAjax)
+                    return $this->redirect($redirect);
             }
         }
 
