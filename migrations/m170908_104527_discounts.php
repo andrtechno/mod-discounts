@@ -24,7 +24,7 @@ class m170908_104527_discounts extends Migration
     {
 
         $this->createTable(Discount::tableName(), [
-            'id' => $this->primaryKey(),
+            'id' => $this->primaryKey()->unsigned(),
             'name' => $this->string(255)->notNull(),
             'sum' => $this->string(10)->notNull(),
             'start_date' => $this->integer(11)->null(),
@@ -37,16 +37,16 @@ class m170908_104527_discounts extends Migration
 
 
         $this->createTable(self::$categoryTable, [
-            'id' => $this->primaryKey(),
-            'discount_id' => $this->integer(),
-            'category_id' => $this->integer(),
+            'id' => $this->primaryKey()->unsigned(),
+            'discount_id' => $this->integer()->unsigned(),
+            'category_id' => $this->integer()->unsigned(),
         ], $this->tableOptions);
 
 
         $this->createTable(self::$manufacturerTable, [
-            'id' => $this->primaryKey(),
-            'discount_id' => $this->integer(),
-            'manufacturer_id' => $this->integer(),
+            'id' => $this->primaryKey()->unsigned(),
+            'discount_id' => $this->integer()->unsigned(),
+            'manufacturer_id' => $this->integer()->unsigned(),
         ], $this->tableOptions);
 
 
