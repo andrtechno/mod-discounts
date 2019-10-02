@@ -22,7 +22,7 @@ class Module extends WebModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        if ($this->discounts === null) {
+        if ($app->id != 'console' && $this->discounts === null) {
 
             $this->discounts = Discount::find()
                 ->published()
