@@ -7,6 +7,13 @@ use yii\db\ActiveRecord;
 use panix\mod\discounts\models\Discount;
 use yii\base\Behavior;
 
+/**
+ * Class DiscountBehavior
+ *
+ * @property mixed $appliedDiscount
+ *
+ * @package panix\mod\discounts\components
+ */
 class DiscountBehavior extends Behavior
 {
 
@@ -41,8 +48,9 @@ class DiscountBehavior extends Behavior
      */
     public function afterFind()
     {
-
-        if (!$this->owner->isNewRecord) {
+        /** @var \panix\mod\shop\models\Product $owner */
+        $owner = $this->owner;
+        if (!$owner->isNewRecord) {
             if ($this->discounts === null) {
 
                 /*$this->discounts = Discount::find()
@@ -61,10 +69,10 @@ class DiscountBehavior extends Behavior
             $user = null;
         }
         // Personal product discount
-        if (!empty($this->owner->discount)) {
+        if (!empty($owner->discount)) {
             $discount = new Discount();
             $discount->name = Yii::t('app', 'Скидка');
-            $discount->sum = $this->owner->discount;
+            $discount->sum = $owner->discount;
             $this->applyDiscount($discount);
         }
 
@@ -82,7 +90,7 @@ class DiscountBehavior extends Behavior
 
 
                     if (!empty($discount->manufacturers)) {
-                        $apply = in_array($this->owner->manufacturer_id, $discount->manufacturers);
+                        $apply = in_array($owner->manufacturer_id, $discount->manufacturers);
                     }
 
                     if (Yii::$app->user->can('Admin') !== true) {
@@ -126,15 +134,16 @@ class DiscountBehavior extends Behavior
      */
     protected function applyDiscount(Discount $discount)
     {
-
+        /** @var \panix\mod\shop\models\Product $owner */
+        $owner = $this->owner;
         if ($this->appliedDiscount === null) {
 
             $sum = $discount->sum;
             if ('%' === substr($discount->sum, -1, 1)) {
-                $sum = $this->owner->price * (int)$sum / 100;
+                $sum = $owner->price * (int)$sum / 100;
             }
-            $this->originalPrice = $this->owner->price;
-            $this->discountPrice = $this->owner->price - $sum;
+            $this->originalPrice = $owner->price;
+            $this->discountPrice = $owner->price - $sum;
 
             $this->discountEndDate = $discount->end_date;
             $this->discountSum = $discount->sum;

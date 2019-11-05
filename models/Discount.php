@@ -9,11 +9,20 @@ use yii\db\Expression;
 
 /**
  * Class Discount
- * @package panix\mod\discounts\models
+
  *
+ * @property string $name
+ * @property string $sum
  * @property array $categories Category ids
  * @property array $manufacturers Manufacturer ids
+ *
+ *
+ *
  * @property integer $start_date
+ * @property integer $end_date
+ *
+ * @package panix\mod\discounts\models
+ *
  */
 class Discount extends ActiveRecord
 {
@@ -32,8 +41,6 @@ class Discount extends ActiveRecord
 
 
     //public $useRules;
-
-
 
 
     public function attributeLabels()
@@ -57,7 +64,6 @@ class Discount extends ActiveRecord
         return new DiscountQuery(get_called_class());
     }
 
-
     /**
      * @inheritdoc
      */
@@ -72,8 +78,6 @@ class Discount extends ActiveRecord
             //[['discountManufacturers', 'discountCategories', 'userRoles'], 'each', 'rule' => ['integer']],
             [['manufacturers','categories'], 'validateArray'],
             //[['manufacturers', 'categories'], 'default', 'value' => []],
-
-
 
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
@@ -132,7 +136,6 @@ class Discount extends ActiveRecord
      */
     public function setManufacturers($data)
     {
-
         $this->_manufacturers = $data;
     }
 
@@ -189,7 +192,7 @@ class Discount extends ActiveRecord
     }
 
     /**
-     * After save event
+     * @inheritdoc
      */
     public function afterSave($insert, $changedAttributes)
     {
