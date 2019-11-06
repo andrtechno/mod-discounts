@@ -9,15 +9,12 @@ use yii\db\Expression;
 
 /**
  * Class Discount
-
  *
+ * @property integer $id
  * @property string $name
  * @property string $sum
  * @property array $categories Category ids
  * @property array $manufacturers Manufacturer ids
- *
- *
- *
  * @property integer $start_date
  * @property integer $end_date
  *
@@ -170,7 +167,9 @@ class Discount extends ActiveRecord
 
     }
 
-
+    /**
+     * @inheritdoc
+     */
     public function beforeSave($insert)
     {
         $this->start_date = strtotime($this->start_date);
@@ -178,6 +177,9 @@ class Discount extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterFind()
     {
         $this->start_date = date('Y-m-d H:i:s', $this->start_date);
@@ -185,6 +187,9 @@ class Discount extends ActiveRecord
         parent::afterFind();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterDelete()
     {
         $this->clearRelations();
