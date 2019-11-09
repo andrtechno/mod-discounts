@@ -140,11 +140,10 @@ class DiscountBehavior extends Behavior
 
             $sum = $discount->sum;
             if ('%' === substr($discount->sum, -1, 1)) {
-                $sum = $owner->price * (int)$sum / 100;
+                $sum = $owner->price * ((double) $sum) / 100;
             }
             $this->originalPrice = $owner->price;
             $this->discountPrice = $owner->price - $sum;
-
             $this->discountEndDate = $discount->end_date;
             $this->discountSum = $discount->sum;
             $this->discountSumNum = $sum;
