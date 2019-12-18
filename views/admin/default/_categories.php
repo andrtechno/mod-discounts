@@ -3,31 +3,30 @@ use panix\mod\shop\models\Category;
 use panix\engine\Html;
 
 ?>
-<div class="form-group row2">
-    <div class="alert alert-info"><?= Yii::t('discounts/default', "CATEGORY_INFO"); ?></div>
-</div>
+    <div class="form-group row2">
+        <div class="alert alert-info"><?= Yii::t('discounts/default', "CATEGORY_INFO"); ?></div>
+    </div>
 
-<div class="form-group row">
-    <div class="col-sm-4">
-        <?= Html::label(Yii::t('app', 'Поиск:'),'search-discount-category',['class'=>'control-label']);?>
+    <div class="form-group row">
+        <div class="col-sm-4">
+            <?= Html::label(Yii::t('app', 'Поиск:'), 'search-discount-category', ['class' => 'control-label']); ?>
+        </div>
+        <div class="col-sm-8">
+            <?= Html::textInput('search', null, [
+                'id' => 'search-discount-category',
+                'class' => 'form-control',
+                'onClick' => '$("#CategoryTree").jstree("search", $(this).val());'
+            ]); ?>
+        </div>
     </div>
-    <div class="col-sm-8">
-        <?= Html::textInput('search', null, [
-            'id' => 'search-discount-category',
-            'class' => 'form-control',
-            'onClick' => '$("#jsTree_CategoryTree").jstree("search", $(this).val());'
-        ]); ?>
-    </div>
-</div>
 
 
 <?php
 
 echo \panix\ext\jstree\JsTree::widget([
     'id' => 'CategoryTree',
-    'name' => 'jstree',
     'allOpen' => true,
-    'data' => Category::find()->dataTree(1),
+    'data' => Category::find()->dataTree(1, null, ['switch' => 1]),
     'core' => [
         'strings' => [
             'Loading ...' => Yii::t('app', 'LOADING')
