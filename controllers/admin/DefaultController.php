@@ -91,7 +91,7 @@ class DefaultController extends AdminController
 
             if ($model->validate()) {
                 $model->save();
-                $this->redirectPage($isNew, $post);
+                return $this->redirectPage($isNew, $post);
             }
         }
 
