@@ -71,7 +71,7 @@ class DiscountBehavior extends Behavior
         // Personal product discount
         if (!empty($owner->discount)) {
             $discount = new Discount();
-            $discount->name = Yii::t('app', 'Скидка');
+            $discount->name = Yii::t('app/default', 'Скидка');
             $discount->sum = $owner->discount;
             $this->applyDiscount($discount);
         }
@@ -122,7 +122,7 @@ class DiscountBehavior extends Behavior
         // Personal discount for users.
         if (!$user->isGuest && !empty($user->discount) && !$this->hasDiscount()) {
             $discount = new Discount();
-            $discount->name = Yii::t('app', 'Персональная скидка');
+            $discount->name = Yii::t('app/default', 'Персональная скидка');
             $discount->sum = $user->discount;
             $this->applyDiscount($discount);
         }

@@ -9,7 +9,7 @@ use panix\engine\Html;
 
     <div class="form-group row">
         <div class="col-sm-4">
-            <?= Html::label(Yii::t('app', 'Поиск:'), 'search-discount-category', ['class' => 'control-label']); ?>
+            <?= Html::label(Yii::t('app/default', 'Поиск:'), 'search-discount-category', ['class' => 'control-label']); ?>
         </div>
         <div class="col-sm-8">
             <?= Html::textInput('search', null, [
@@ -29,7 +29,7 @@ echo \panix\ext\jstree\JsTree::widget([
     'data' => Category::find()->dataTree(1, null, ['switch' => 1]),
     'core' => [
         'strings' => [
-            'Loading ...' => Yii::t('app', 'LOADING')
+            'Loading ...' => Yii::t('app/default', 'LOADING')
         ],
         'check_callback' => true,
         "themes" => [
