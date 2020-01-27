@@ -10,7 +10,12 @@ use yii\base\Behavior;
 /**
  * Class DiscountBehavior
  *
- * @property mixed $appliedDiscount
+ * @property mixed $hasDiscount
+ * @property mixed $originalPrice
+ * @property mixed $discountPrice
+ * @property mixed $discountEndDate
+ * @property mixed $discountSum
+ * @property mixed $discountSumNum
  *
  * @package panix\mod\discounts\components
  */
@@ -20,7 +25,7 @@ class DiscountBehavior extends Behavior
     /**
      * @var mixed|null|Discount
      */
-    public $appliedDiscount = null;
+    public $hasDiscount = null;
 
     /**
      * @var float product price before discount applied
@@ -61,7 +66,7 @@ class DiscountBehavior extends Behavior
             }
         }
 
-        if ($this->appliedDiscount !== null)
+        if ($this->hasDiscount !== null)
             return;
 
         $user = Yii::$app->user;
@@ -136,18 +141,20 @@ class DiscountBehavior extends Behavior
     {
         /** @var \panix\mod\shop\models\Product $owner */
         $owner = $this->owner;
-        if ($this->appliedDiscount === null) {
+        if ($this->hasDiscount === null) {
 
             $sum = $discount->sum;
+            $this->discountSumNum = $sum;
             if ('%' === substr($discount->sum, -1, 1)) {
-                $sum = $owner->price * ((double) $sum) / 100;
+                $this->discountSumNum = ((double) $sum) / 100;
+                $sum = $owner->price * $this->discountSumNum;
+
             }
             $this->originalPrice = $owner->price;
             $this->discountPrice = $owner->price - $sum;
             $this->discountEndDate = $discount->end_date;
             $this->discountSum = $discount->sum;
-            $this->discountSumNum = $sum;
-            $this->appliedDiscount = $discount;
+            $this->hasDiscount = $discount;
 
         }
 
@@ -190,7 +197,7 @@ class DiscountBehavior extends Behavior
      */
     public function hasDiscount()
     {
-        return !($this->appliedDiscount === null);
+        return !($this->hasDiscount === null);
     }
 
 }
