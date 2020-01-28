@@ -12,7 +12,7 @@ class Countdown extends Widget {
     public function run() {
         if (Yii::$app->hasModule('discounts')) {
       
-            if ($this->model->appliedDiscount && $this->model->discountEndDate) {
+            if ($this->model->hasDiscount && $this->model->discountEndDate) {
                 $this->registerScript();
                 return $this->render($this->skin);
             }

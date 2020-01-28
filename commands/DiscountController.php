@@ -49,7 +49,7 @@ print_r($discount->manufacturers);
     protected function applyDiscount(Discount $discount)
     {
 
-        if ($this->appliedDiscount === null) {
+        if ($this->hasDiscount === null) {
 
             $sum = $discount->sum;
             if ('%' === substr($discount->sum, -1, 1)) {
@@ -61,7 +61,7 @@ print_r($discount->manufacturers);
             $this->discountEndDate = $discount->end_date;
             $this->discountSum = $discount->sum;
             $this->discountSumNum = $sum;
-            $this->appliedDiscount = $discount;
+            $this->hasDiscount = $discount;
 
         }
 
