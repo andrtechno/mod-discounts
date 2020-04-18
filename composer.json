@@ -12,9 +12,6 @@
             "homepage": "https://pixelion.com.ua"
         }
     ],
-    "require": {
-        "panix/mod-shop": "*"
-    },
     "autoload": {
         "psr-4": {
             "panix\\mod\\discounts\\": ""
