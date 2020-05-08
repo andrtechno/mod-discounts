@@ -121,7 +121,7 @@ class Discount extends ActiveRecord
         if (is_array($this->_categories))
             return $this->_categories;
 
-        $this->_categories = Yii::$app->db->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
+        $this->_categories = self::getDb()->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
@@ -145,7 +145,7 @@ class Discount extends ActiveRecord
         if (is_array($this->_manufacturers))
             return $this->_manufacturers;
 
-        $this->_manufacturers = Yii::$app->db->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
+        $this->_manufacturers = self::getDb()->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
@@ -158,10 +158,10 @@ class Discount extends ActiveRecord
      */
     public function clearRelations()
     {
-        Yii::$app->db->createCommand()
+        self::getDb()->createCommand()
             ->delete('{{%discount__manufacturer}}', 'discount_id=:id', [':id' => $this->id])
             ->execute();
-        Yii::$app->db->createCommand()
+        self::getDb()->createCommand()
             ->delete('{{%discount__category}}', 'discount_id=:id', [':id' => $this->id])
             ->execute();
 
@@ -206,7 +206,7 @@ class Discount extends ActiveRecord
         // Process manufacturers
         if (!empty($this->_manufacturers)) {
             foreach ($this->_manufacturers as $id) {
-                Yii::$app->db->createCommand()->insert('{{%discount__manufacturer}}', [
+                self::getDb()->createCommand()->insert('{{%discount__manufacturer}}', [
                     'discount_id' => $this->id,
                     'manufacturer_id' => $id,
                 ])->execute();
@@ -217,7 +217,7 @@ class Discount extends ActiveRecord
         if (!empty($this->_categories)) {
             foreach (array_unique($this->_categories) as $id) {
 
-                Yii::$app->db->createCommand()->insert('{{%discount__category}}', [
+                self::getDb()->createCommand()->insert('{{%discount__category}}', [
                     'discount_id' => $this->id,
                     'category_id' => $id,
                 ])->execute();
