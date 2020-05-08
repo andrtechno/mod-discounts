@@ -51,6 +51,6 @@ echo \panix\ext\jstree\JsTree::widget([
 
 foreach ($model->getCategories() as $id) {
 
-    $this->registerJs("$('#jsTree_CategoryTree').checkNode({$id});", yii\web\View::POS_END, "checkNode{$id}");
+    $this->registerJs("$('#CategoryTree').checkNode({$id});", yii\web\View::POS_END, "checkNode{$id}");
 }
 
