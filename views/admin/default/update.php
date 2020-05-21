@@ -26,13 +26,19 @@ $form = ActiveForm::begin(['id' => 'discount-form']);
 
         <?= $form->field($model, 'manufacturers')
             ->dropDownList(ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'), [
-                'prompt' => 'Укажите производителя',
+                'prompt' => html_entity_decode('&mdash; Укажите производителя &mdash;'),
                 'multiple' => 'multiple'
             ])->hint('Чтобы скидка заработала, необходимо указать категорию');
         ?>
+
+
+        <?= $form->field($model, 'userRoles')->dropDownList(ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', function ($role) {
+            return html_entity_decode(((!empty($role->description)) ? '[' . $role->name . '] &mdash; ' . $role->description : $role->name));
+        }), ['prompt' => html_entity_decode('&mdash; Укажите группу пользователей &mdash;'),'multiple' => true]); ?>
+
         <div class="form-group row">
             <div class="col-sm-4 col-lg-2">
-                <?= Html::label(Yii::t('discounts/Discount','CATEGORIES')); ?>
+                <?= Html::label(Yii::t('discounts/Discount', 'CATEGORIES')); ?>
 
             </div>
             <div class="col-sm-8 col-lg-10">

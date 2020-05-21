@@ -36,9 +36,7 @@ class Discount extends ActiveRecord
      */
     protected $_manufacturers;
 
-
-    //public $useRules;
-
+    //public $roles;
 
     public function attributeLabels()
     {
@@ -73,9 +71,9 @@ class Discount extends ActiveRecord
             ['sum', 'string', 'max' => 10],
             [['created_at', 'updated_at'], 'integer'],
             //[['discountManufacturers', 'discountCategories', 'userRoles'], 'each', 'rule' => ['integer']],
-            [['manufacturers','categories'], 'validateArray'],
+            [['manufacturers', 'categories'], 'validateArray'],
             //[['manufacturers', 'categories'], 'default', 'value' => []],
-
+            ['userRoles', 'each', 'rule' => ['string']],
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
         ];

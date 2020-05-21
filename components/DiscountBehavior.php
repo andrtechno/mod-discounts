@@ -105,17 +105,17 @@ class DiscountBehavior extends Behavior
 
 
                 // Apply discount by user role. Discount for admin disabled.
-                /*if (!empty($discount->userRoles)) {
+                if (!empty($discount->userRoles)) {
                     //if (!empty($discount->userRoles) && $user->checkAccess('Admin') !== true) {
                     $apply = false;
 
                     foreach ($discount->userRoles as $role) {
-                        if ($user->checkAccess($role)) {
+                        if ($user->can($role)) {
                             $apply = true;
                             break;
                         }
                     }
-                }*/
+                }
 
 
                 if ($apply === true) {
