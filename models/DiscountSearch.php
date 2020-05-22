@@ -10,6 +10,8 @@ use panix\mod\discounts\models\Discount;
 
 class DiscountSearch extends Discount
 {
+    public $categories;
+    public $manufacturers;
 
     /**
      * @inheritdoc
@@ -17,7 +19,7 @@ class DiscountSearch extends Discount
     public function rules()
     {
         return [
-            [['id'], 'integer'],
+            [['id', 'categories', 'manufacturers'], 'integer'],
             [['name'], 'safe'],
             [['start_date', 'end_date'], 'date', 'format' => 'php:Y-m-d']
         ];
@@ -55,14 +57,19 @@ class DiscountSearch extends Discount
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
+        $query->andFilterWhere(['id' => $this->id]);
 
-        //$query->andFilterWhere(['like', "DATE(CONVERT_TZ('start_date', 'UTC', '".\Yii::$app->timezone."'))", strtotime($this->start_date).' 23:59:59']);
+        if ($this->categories) {
+            $query->leftJoin(self::tableNameCategories(), Discount::tableName() . '.`id` = ' . self::tableNameCategories() . '.`discount_id`');
+            $query->andFilterWhere([self::tableNameCategories() . '.category_id' => $this->categories]);
+        }
+
+        if ($this->manufacturers) {
+            $query->leftJoin(self::tableNameManufacturers(), Discount::tableName() . '.`id` = ' . self::tableNameManufacturers() . '.`discount_id`');
+            $query->andFilterWhere([self::tableNameManufacturers() . '.manufacturer_id' => $this->manufacturers]);
+        }
 
         $query->andFilterWhere(['like', 'name', $this->name]);
-        // $query->andFilterWhere(['like', 'start_date', strtotime($this->start_date)]);
 
         foreach (['end_date', 'start_date', 'created_at', 'updated_at'] as $date) {
             $query->andFilterWhere(['>=', $date, $this->{$date} ? strtotime($this->{$date} . ' 00:00:00') : null]);

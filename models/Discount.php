@@ -36,7 +36,15 @@ class Discount extends ActiveRecord
      */
     protected $_manufacturers;
 
-    //public $roles;
+    public static function tableNameCategories()
+    {
+        return '{{%discount__category}}';
+    }
+
+    public static function tableNameManufacturers()
+    {
+        return '{{%discount__manufacturer}}';
+    }
 
     public function attributeLabels()
     {
@@ -73,6 +81,7 @@ class Discount extends ActiveRecord
             //[['discountManufacturers', 'discountCategories', 'userRoles'], 'each', 'rule' => ['integer']],
             [['manufacturers', 'categories'], 'validateArray'],
             //[['manufacturers', 'categories'], 'default', 'value' => []],
+           // [['userRoles'], 'default', 'value' => []],
             ['userRoles', 'each', 'rule' => ['string']],
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
@@ -97,7 +106,7 @@ class Discount extends ActiveRecord
     /**
      * @param array $roles
      */
-    public function setUserRoles(array $roles)
+    public function setUserRoles($roles)
     {
         $this->roles = json_encode($roles);
     }
@@ -119,7 +128,7 @@ class Discount extends ActiveRecord
         if (is_array($this->_categories))
             return $this->_categories;
 
-        $this->_categories = self::getDb()->createCommand('SELECT category_id FROM {{%discount__category}} WHERE discount_id=:id')
+        $this->_categories = self::getDb()->createCommand('SELECT category_id FROM '.self::tableNameCategories().' WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
@@ -143,7 +152,7 @@ class Discount extends ActiveRecord
         if (is_array($this->_manufacturers))
             return $this->_manufacturers;
 
-        $this->_manufacturers = self::getDb()->createCommand('SELECT manufacturer_id FROM {{%discount__manufacturer}} WHERE discount_id=:id')
+        $this->_manufacturers = self::getDb()->createCommand('SELECT manufacturer_id FROM '.self::tableNameManufacturers().' WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
@@ -157,10 +166,10 @@ class Discount extends ActiveRecord
     public function clearRelations()
     {
         self::getDb()->createCommand()
-            ->delete('{{%discount__manufacturer}}', 'discount_id=:id', [':id' => $this->id])
+            ->delete(self::tableNameManufacturers(), 'discount_id=:id', [':id' => $this->id])
             ->execute();
         self::getDb()->createCommand()
-            ->delete('{{%discount__category}}', 'discount_id=:id', [':id' => $this->id])
+            ->delete(self::tableNameCategories(), 'discount_id=:id', [':id' => $this->id])
             ->execute();
 
     }
@@ -204,7 +213,7 @@ class Discount extends ActiveRecord
         // Process manufacturers
         if (!empty($this->_manufacturers)) {
             foreach ($this->_manufacturers as $id) {
-                self::getDb()->createCommand()->insert('{{%discount__manufacturer}}', [
+                self::getDb()->createCommand()->insert(self::tableNameManufacturers(), [
                     'discount_id' => $this->id,
                     'manufacturer_id' => $id,
                 ])->execute();
@@ -215,7 +224,7 @@ class Discount extends ActiveRecord
         if (!empty($this->_categories)) {
             foreach (array_unique($this->_categories) as $id) {
 
-                self::getDb()->createCommand()->insert('{{%discount__category}}', [
+                self::getDb()->createCommand()->insert(self::tableNameCategories(), [
                     'discount_id' => $this->id,
                     'category_id' => $id,
                 ])->execute();
