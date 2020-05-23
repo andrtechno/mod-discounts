@@ -12,7 +12,7 @@ Pjax::begin([
 ]);
 $categories = ArrayHelper::map(Category::find()->excludeRoot()->asArray()->all(), 'id', 'name_'.Yii::$app->language);
 $manufacturers = ArrayHelper::map(\panix\mod\shop\models\Manufacturer::find()->asArray()->all(),'id','name_'.Yii::$app->language);
-//CMS::dump($manufacturers);
+
 echo GridView::widget([
     'tableOptions' => ['class' => 'table table-striped'],
     'dataProvider' => $dataProvider,

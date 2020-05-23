@@ -34,7 +34,7 @@ $form = ActiveForm::begin(['id' => 'discount-form']);
 
         <?= $form->field($model, 'userRoles')->dropDownList(ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', function ($role) {
             return html_entity_decode(((!empty($role->description)) ? '[' . $role->name . '] &mdash; ' . $role->description : $role->name));
-        }), ['prompt' => html_entity_decode('&mdash; Укажите группу пользователей &mdash;'),'multiple' => true]); ?>
+        }), ['prompt' => html_entity_decode('&mdash; Укажите группу пользователей &mdash;'),'multiple' => true])->hint($model::t('HINT_USER_ROLES')); ?>
 
         <div class="form-group row">
             <div class="col-sm-4 col-lg-2">

@@ -50,6 +50,7 @@ class Discount extends ActiveRecord
     {
         return \yii\helpers\ArrayHelper::merge([
             'manufacturers' => self::t('MANUFACTURERS'),
+            'categories' => self::t('CATEGORIES'),
             'userRoles' => self::t('USER_ROLES'),
         ], parent::attributeLabels());
     }

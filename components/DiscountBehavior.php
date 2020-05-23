@@ -91,36 +91,30 @@ class DiscountBehavior extends Behavior
                 // Validate category
                 if ($this->searchArray($discount->categories, array_values($this->ownerCategories))) {
                     $apply = true;
-                    // Validate manufacturer
-
-
-                    if (!empty($discount->manufacturers)) {
-                        $apply = in_array($owner->manufacturer_id, $discount->manufacturers);
-                    }
-
-                    if (Yii::$app->user->can('Admin') !== true) {
-                        //$apply = false;
-                    }
                 }
-
+                // Validate manufacturer
+                if (!empty($discount->manufacturers)) {
+                    $apply = in_array($owner->manufacturer_id, $discount->manufacturers);
+                }
 
                 // Apply discount by user role. Discount for admin disabled.
                 if (!empty($discount->userRoles)) {
-                    //if (!empty($discount->userRoles) && $user->checkAccess('Admin') !== true) {
-                    $apply = false;
+                    if (Yii::$app->user->can('admin') !== true) {
+                        $apply = false;
 
-                    foreach ($discount->userRoles as $role) {
-                        if ($user->can($role)) {
-                            $apply = true;
-                            break;
+                        foreach ($discount->userRoles as $role) {
+                            if ($user->can($role)) {
+                                $apply = true;
+                                break;
+                            }
                         }
                     }
                 }
 
-
                 if ($apply === true) {
                     $this->applyDiscount($discount);
                 }
+
             }
         }
 
@@ -146,7 +140,7 @@ class DiscountBehavior extends Behavior
             $sum = $discount->sum;
             $this->discountSumNum = $sum;
             if ('%' === substr($discount->sum, -1, 1)) {
-                $this->discountSumNum = ((double) $sum) / 100;
+                $this->discountSumNum = ((double)$sum) / 100;
                 $sum = $owner->price * $this->discountSumNum;
 
             }
