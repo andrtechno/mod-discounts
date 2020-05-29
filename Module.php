@@ -57,6 +57,7 @@ class Module extends WebModule implements BootstrapInterface
                         'label' => Yii::t('discounts/default', 'MODULE_NAME'),
                         'url' => ['/admin/discounts/default/index'],
                         'icon' => $this->icon,
+                        'visible' => Yii::$app->user->can('/discounts/admin/default/index') || Yii::$app->user->can('/discounts/admin/default/*')
                     ],
                 ],
             ],
