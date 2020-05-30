@@ -33,15 +33,16 @@ class DefaultController extends AdminController
             'url' => ['/admin/shop']
         ];
         $this->breadcrumbs[] = $this->pageName;
-
-        $this->buttons = [
-            [
-                'icon' => 'add',
-                'label' => Yii::t('discounts/default', 'CREATE_DISCOUNT'),
-                'url' => ['create'],
-                'options' => ['class' => 'btn btn-success']
-            ]
-        ];
+        if (Yii::$app->user->can("/{$this->module->id}/{$this->id}/*") ||  Yii::$app->user->can("/{$this->module->id}/{$this->id}/create")) {
+            $this->buttons = [
+                [
+                    'icon' => 'add',
+                    'label' => Yii::t('discounts/default', 'CREATE_DISCOUNT'),
+                    'url' => ['create'],
+                    'options' => ['class' => 'btn btn-success']
+                ]
+            ];
+        }
         $searchModel = new DiscountSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
