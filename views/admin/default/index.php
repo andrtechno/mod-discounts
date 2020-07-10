@@ -38,10 +38,12 @@ echo GridView::widget([
                 ]
             ),
             'value' => function ($model) use ($categories) {
-                $result = '';
+                $result = null;
                 foreach ($model->categories as $category) {
                     $options['class'] = 'badge badge-secondary';
-                    $result .= Html::tag('span', $categories[$category], $options);
+                    if(isset($categories[$category])){
+                        $result .= Html::tag('span', $categories[$category], $options);
+                    }
                 }
                 return $result;
             }
@@ -57,7 +59,7 @@ echo GridView::widget([
                 ]
             ),
             'value' => function ($model) use ($manufacturers) {
-                $result = '';
+                $result = null;
                 foreach ($model->manufacturers as $manufacturer) {
                     $options['class'] = 'badge badge-secondary';
                     $result .= Html::tag('span', $manufacturers[$manufacturer], $options);
