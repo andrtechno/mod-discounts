@@ -28,11 +28,11 @@ class DefaultController extends AdminController
         $this->pageName = Yii::t('discounts/default', 'MODULE_NAME');
 
 
-        $this->breadcrumbs[] = [
+        $this->view->params['breadcrumbs'][] = [
             'label' => Yii::t('shop/default', 'MODULE_NAME'),
             'url' => ['/admin/shop']
         ];
-        $this->breadcrumbs[] = $this->pageName;
+        $this->view->params['breadcrumbs'][] = $this->pageName;
         if (Yii::$app->user->can("/{$this->module->id}/{$this->id}/*") ||  Yii::$app->user->can("/{$this->module->id}/{$this->id}/create")) {
             $this->buttons = [
                 [
@@ -61,15 +61,15 @@ class DefaultController extends AdminController
             Yii::t('discounts/default', 'Редактирование скидки');
 
 
-        $this->breadcrumbs[] = [
+        $this->view->params['breadcrumbs'][] = [
             'label' => Yii::t('shop/default', 'MODULE_NAME'),
             'url' => ['/admin/shop']
         ];
-        $this->breadcrumbs[] = [
+        $this->view->params['breadcrumbs'][] = [
             'label' => Yii::t('discounts/default', 'MODULE_NAME'),
             'url' => ['index']
         ];
-        $this->breadcrumbs[] = $this->pageName;
+        $this->view->params['breadcrumbs'][] = $this->pageName;
         \panix\mod\discounts\DiscountAsset::register($this->view);
 
 
