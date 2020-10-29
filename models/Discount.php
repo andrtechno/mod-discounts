@@ -2,6 +2,9 @@
 
 namespace panix\mod\discounts\models;
 
+use panix\engine\CMS;
+use panix\mod\shop\components\ProductPriceHistoryDiscountQueue;
+use panix\mod\shop\models\Product;
 use Yii;
 use panix\engine\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
@@ -82,7 +85,7 @@ class Discount extends ActiveRecord
             //[['discountManufacturers', 'discountCategories', 'userRoles'], 'each', 'rule' => ['integer']],
             [['manufacturers', 'categories'], 'validateArray'],
             //[['manufacturers', 'categories'], 'default', 'value' => []],
-           // [['userRoles'], 'default', 'value' => []],
+            // [['userRoles'], 'default', 'value' => []],
             ['userRoles', 'each', 'rule' => ['string']],
             [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
             [['id', 'name', 'switch', 'sum', 'start_date', 'end_date'], 'safe'],
@@ -129,7 +132,7 @@ class Discount extends ActiveRecord
         if (is_array($this->_categories))
             return $this->_categories;
 
-        $this->_categories = self::getDb()->createCommand('SELECT category_id FROM '.self::tableNameCategories().' WHERE discount_id=:id')
+        $this->_categories = self::getDb()->createCommand('SELECT category_id FROM ' . self::tableNameCategories() . ' WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
@@ -153,7 +156,7 @@ class Discount extends ActiveRecord
         if (is_array($this->_manufacturers))
             return $this->_manufacturers;
 
-        $this->_manufacturers = self::getDb()->createCommand('SELECT manufacturer_id FROM '.self::tableNameManufacturers().' WHERE discount_id=:id')
+        $this->_manufacturers = self::getDb()->createCommand('SELECT manufacturer_id FROM ' . self::tableNameManufacturers() . ' WHERE discount_id=:id')
             ->bindValue(':id', $this->id)
             ->queryColumn();
 
@@ -209,29 +212,93 @@ class Discount extends ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $this->clearRelations();
+        if (!isset($changedAttributes['switch'])) {
 
-        // Process manufacturers
-        if (!empty($this->_manufacturers)) {
-            foreach ($this->_manufacturers as $id) {
-                self::getDb()->createCommand()->insert(self::tableNameManufacturers(), [
-                    'discount_id' => $this->id,
-                    'manufacturer_id' => $id,
-                ])->execute();
+            $this->clearRelations();
+
+            // Process manufacturers
+            if (!empty($this->_manufacturers)) {
+                foreach ($this->_manufacturers as $id) {
+                    self::getDb()->createCommand()->insert(self::tableNameManufacturers(), [
+                        'discount_id' => $this->id,
+                        'manufacturer_id' => $id,
+                    ])->execute();
+                }
+            }
+
+            // Process categories
+            if (!empty($this->_categories)) {
+                foreach (array_unique($this->_categories) as $id) {
+
+                    self::getDb()->createCommand()->insert(self::tableNameCategories(), [
+                        'discount_id' => $this->id,
+                        'category_id' => $id,
+                    ])->execute();
+                }
+            }
+
+        }
+
+
+        if (!$insert && Yii::$app->queue) {
+
+            if (isset($changedAttributes['sum']) || isset($changedAttributes['switch'])) {
+
+                if ($this->categories || $this->manufacturers) {
+
+                    $query = Product::find();
+
+                    if ($this->categories) {
+                        $query->applyCategories($this->categories);
+                    }
+                    if ($this->manufacturers) {
+                        $query->applyManufacturers($this->manufacturers);
+                    }
+
+                    $query->asArray();//->select([Product::tableName() . '.`id`', Product::tableName() . '.`price`', Product::tableName() . '.`price_purchase`', Product::tableName() . '.`currency_id`']);
+
+
+                    if (isset($changedAttributes['sum'])) {
+                        if (($changedAttributes['sum'] <> $this->attributes['sum'])) {
+                            $ch_sum = $changedAttributes['sum'];
+                            if (strpos($ch_sum, '%')) {
+                                $ch_sum = (double)str_replace('%', '', $ch_sum);
+                            }
+
+                            $attr_sum = $this->attributes['sum'];
+                            if (strpos($attr_sum, '%')) {
+                                $attr_sum = (double)str_replace('%', '', $attr_sum);
+                            }
+                            $q_event = 'change';
+                            $type = ($ch_sum < $attr_sum) ? 1 : 0;
+                        }
+                    }
+                    if (isset($changedAttributes['switch'])) {
+                        $q_event = ($this->attributes['switch']) ? 'change' : 'switch_off';
+                        $type = ($this->attributes['switch']) ? 1 : 0;
+                        $attr_sum = $this->attributes['sum'];
+                    }
+
+                    // $query->attachBehavior('discount',
+                    //         '\panix\mod\discounts\components\DiscountBehavior'
+                    //  );
+
+                    foreach ($query->indexBy('id')->batch(500) as $items) {
+
+                        Yii::$app->queue->push(new ProductPriceHistoryDiscountQueue([
+                            'items' => array_keys($items),
+                            'type' => $type,
+                            'value' => $attr_sum,
+                            'q_event' => $q_event
+                        ]));
+                    }
+                }
             }
         }
 
-        // Process categories
-        if (!empty($this->_categories)) {
-            foreach (array_unique($this->_categories) as $id) {
-
-                self::getDb()->createCommand()->insert(self::tableNameCategories(), [
-                    'discount_id' => $this->id,
-                    'category_id' => $id,
-                ])->execute();
-            }
-        }
 
         parent::afterSave($insert, $changedAttributes);
     }
+
+
 }
