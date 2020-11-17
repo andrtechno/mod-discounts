@@ -10,8 +10,8 @@ use panix\mod\shop\models\Category;
 Pjax::begin([
     'dataProvider' => $dataProvider
 ]);
-$categories = ArrayHelper::map(Category::find()->excludeRoot()->asArray()->all(), 'id', 'name_'.Yii::$app->language);
-$manufacturers = ArrayHelper::map(\panix\mod\shop\models\Manufacturer::find()->asArray()->all(),'id','name_'.Yii::$app->language);
+$categories = ArrayHelper::map(Category::find()->excludeRoot()->asArray()->all(), 'id', 'name_' . Yii::$app->language);
+$manufacturers = ArrayHelper::map(\panix\mod\shop\models\Manufacturer::find()->asArray()->all(), 'id', 'name_' . Yii::$app->language);
 
 echo GridView::widget([
     'tableOptions' => ['class' => 'table table-striped'],
@@ -41,7 +41,8 @@ echo GridView::widget([
                 $result = null;
                 foreach ($model->categories as $category) {
                     $options['class'] = 'badge badge-secondary';
-                    if(isset($categories[$category])){
+                    if (isset($categories[$category])) {
+                        if (isset($categories[$category]))
                         $result .= Html::tag('span', $categories[$category], $options);
                     }
                 }
@@ -60,9 +61,12 @@ echo GridView::widget([
             ),
             'value' => function ($model) use ($manufacturers) {
                 $result = null;
-                foreach ($model->manufacturers as $manufacturer) {
-                    $options['class'] = 'badge badge-secondary';
-                    $result .= Html::tag('span', $manufacturers[$manufacturer], $options);
+                if ($model->manufacturers) {
+                    foreach ($model->manufacturers as $manufacturer) {
+                        $options['class'] = 'badge badge-secondary';
+                        if (isset($manufacturers[$manufacturer]))
+                            $result .= Html::tag('span', $manufacturers[$manufacturer], $options);
+                    }
                 }
                 return $result;
             }
