@@ -8,8 +8,9 @@ return [
     'MANUFACTURERS' => 'Виробники',
     'USER_ROLES' => 'Групи користувачів',
     'HINT_SUM' => 'Вкажіть ціле число або відсоток. Наприклад 10%. ',
-    'HINT_MANUFACTURERS' => 'Оберіть виробника',
+    'HINT_MANUFACTURERS' => 'Щоб знижка заробила, необхідно вказати категорію',
     'HINT_USER_ROLES' => '<strong>Увага:</strong> Знижки для адміністраторів заборонені.',
     'CATEGORIES' => 'Категорії',
-    'ROLES' => 'Групи користувачів'
+    'ROLES' => 'Групи користувачів',
+	'SELECT_EMPTY_MANUFACTURER' => '&mdash; Укажите виробника &mdash;'
 ];

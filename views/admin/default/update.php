@@ -26,9 +26,9 @@ $form = ActiveForm::begin(['id' => 'discount-form']);
 
         <?= $form->field($model, 'manufacturers')
             ->dropDownList(ArrayHelper::map(Manufacturer::find()->all(), 'id', 'name'), [
-                'prompt' => html_entity_decode('&mdash; Укажите производителя &mdash;'),
+                'prompt' => html_entity_decode($model::t('SELECT_EMPTY_MANUFACTURER')),
                 'multiple' => 'multiple'
-            ])->hint('Чтобы скидка заработала, необходимо указать категорию');
+            ])->hint($model::t('HINT_MANUFACTURERS'));
         ?>
 
 
