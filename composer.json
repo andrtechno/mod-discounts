@@ -3,7 +3,7 @@
     "description": "Module discounts",
     "keywords": ["pixelion-cms", "module", "discounts"],
     "homepage": "https://github.com/andrtechno/mod-discounts",
-    "type": "yii2-extension",
+    "type": "pixelion-module",
     "license": "MIT",
     "authors": [
         {
