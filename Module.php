@@ -2,11 +2,12 @@
 
 namespace panix\mod\discounts;
 
-use panix\mod\discounts\models\Discount;
 use Yii;
 use yii\base\BootstrapInterface;
 use panix\engine\WebModule;
 use panix\mod\admin\widgets\sidebar\BackendNav;
+use panix\mod\discounts\models\Discount;
+use yii\db\Exception;
 
 class Module extends WebModule implements BootstrapInterface
 {
@@ -22,13 +23,15 @@ class Module extends WebModule implements BootstrapInterface
      */
     public function bootstrap($app)
     {
-        //$app->id != 'console' &&
         if ($this->discounts === null) {
+            try {
+                $this->discounts = Discount::find()
+                    ->published()
+                    ->applyDate()
+                    ->all();
+            } catch (Exception $exception) {
 
-            $this->discounts = Discount::find()
-                ->published()
-                ->applyDate()
-                ->all();
+            }
         }
     }
 

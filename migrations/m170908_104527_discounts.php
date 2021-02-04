@@ -1,7 +1,5 @@
 <?php
 
-namespace panix\mod\discounts\migrations;
-
 /**
  * Generation migrate by PIXELION CMS
  *
