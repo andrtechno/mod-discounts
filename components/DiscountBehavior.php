@@ -27,7 +27,7 @@ class DiscountBehavior extends Behavior
     /**
      * @var float product price before discount applied
      */
-    public $originalPrice;
+    //public $originalPrice;
     //public $discountPrice;
     //public $discountSum;
     public $discountSumNum;
@@ -145,7 +145,7 @@ class DiscountBehavior extends Behavior
 
             }
 
-            $this->originalPrice = $owner->price;
+            $owner->originalPrice = $owner->price;
             $owner->discountPrice = $owner->price - $sum;
             $this->discountEndDate = $discount->end_date;
             $owner->discountSum = $discount->sum;
