@@ -10,11 +10,8 @@ use yii\base\Behavior;
 /**
  * Class DiscountBehavior
  *
- * @property mixed $hasDiscount
  * @property mixed $originalPrice
- * @property mixed $discountPrice
  * @property mixed $discountEndDate
- * @property mixed $discountSum
  * @property mixed $discountSumNum
  *
  * @package panix\mod\discounts\components
@@ -25,14 +22,14 @@ class DiscountBehavior extends Behavior
     /**
      * @var mixed|null|Discount
      */
-    public $hasDiscount = null;
+    //public $hasDiscount = null;
 
     /**
      * @var float product price before discount applied
      */
     public $originalPrice;
-    public $discountPrice;
-    public $discountSum;
+    //public $discountPrice;
+    //public $discountSum;
     public $discountSumNum;
     public $discountEndDate;
 
@@ -66,13 +63,14 @@ class DiscountBehavior extends Behavior
             }
         }
 
-        if ($this->hasDiscount !== null)
+        if ($owner->hasDiscount !== null)
             return;
 
         $user = Yii::$app->user;
         if (Yii::$app instanceof \yii\console\Application) {
             $user = null;
         }
+
         // Personal product discount
         if (!empty($owner->discount)) {
             $discount = new Discount();
@@ -95,6 +93,7 @@ class DiscountBehavior extends Behavior
                 // Validate manufacturer
                 if (!empty($discount->manufacturers)) {
                     $apply = in_array($owner->manufacturer_id, $discount->manufacturers);
+
                 }
 
                 // Apply discount by user role. Discount for admin disabled.
@@ -119,12 +118,12 @@ class DiscountBehavior extends Behavior
         }
 
         // Personal discount for users.
-        if (!$user->isGuest && !empty($user->discount) && !$this->hasDiscount()) {
+        /*if (!$user->isGuest && !empty($user->discount) && !$this->owner->hasDiscount) {
             $discount = new Discount();
             $discount->name = Yii::t('app/default', 'Персональная скидка');
             $discount->sum = $user->discount;
             $this->applyDiscount($discount);
-        }
+        }*/
     }
 
     /**
@@ -135,7 +134,8 @@ class DiscountBehavior extends Behavior
     {
         /** @var \panix\mod\shop\models\Product $owner */
         $owner = $this->owner;
-        if ($this->hasDiscount === null) {
+
+        if ($owner->hasDiscount === null) {
 
             $sum = $discount->sum;
             $this->discountSumNum = $sum;
@@ -144,11 +144,12 @@ class DiscountBehavior extends Behavior
                 $sum = $owner->price * $this->discountSumNum;
 
             }
+
             $this->originalPrice = $owner->price;
-            $this->discountPrice = $owner->price - $sum;
+            $owner->discountPrice = $owner->price - $sum;
             $this->discountEndDate = $discount->end_date;
-            $this->discountSum = $discount->sum;
-            $this->hasDiscount = $discount;
+            $owner->discountSum = $discount->sum;
+            $owner->hasDiscount = $discount->sum;
 
         }
 
@@ -191,7 +192,7 @@ class DiscountBehavior extends Behavior
      */
     public function hasDiscount()
     {
-        return !($this->hasDiscount === null);
+        return !($this->owner->hasDiscount === null);
     }
 
 }
