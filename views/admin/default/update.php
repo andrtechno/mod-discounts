@@ -8,6 +8,7 @@ use panix\engine\jui\DatetimePicker;
 use panix\mod\shop\models\Category;
 
 /**
+ * @var \yii\web\View $this
  * @var \panix\mod\discounts\models\Discount $model
  * @var \panix\engine\bootstrap\ActiveForm $form
  */
