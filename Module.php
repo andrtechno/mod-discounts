@@ -5,7 +5,7 @@ namespace panix\mod\discounts;
 use Yii;
 use yii\base\BootstrapInterface;
 use panix\engine\WebModule;
-use panix\mod\admin\widgets\sidebar\BackendNav;
+use app\web\themes\dashboard\sidebar\BackendNav;
 use panix\mod\discounts\models\Discount;
 use yii\db\Exception;
 
